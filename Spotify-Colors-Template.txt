@@ -1,2 +1,73 @@
 Spotify Palette Colors Template
 
+Orange - high danceability - R
+
+blue - low danceability - B
+
+Yellow -  high valence (positivity) ...? - R
+
+violet - low valence - B
+
+Red - hgih loudness - R
+
+Greem - Low Loudness G 
+
+red orange - high energy - R
+
+blue green - low energy G 
+
+RGB - Red Green Blue 
+
+A true blue is (0 - red, 0-green, 255-blue)
+
+lowering the blue number will make it darker, raising the red and green make it lighter
+
+
+you know its a lighter color if it has high values for all three
+
+darker if lower 
+
+
+
+START READING HERE 
+
+OKAY so we can make colors on RGB scale right, so how about we make colors based on that so limiting to only three criteria but also
+providing cool data right so like.
+
+
+we take their decimal values, and compute it based on percentage of 255 
+
+
+0.8 ====> 80% of 255 ====> 204!!
+
+
+then we just need the other two values!! 
+
+i want to do 5 colors!
+
+184 in comparison of 128 or 656 right so i added the rgb values together to sort by shade
+
+
+lets take the watermelon sugar example 
+
+danceability: 0.548 => change it to be .54 => 54% so we'll consider everything over 50 high so R 
+    => so 54% of 255 is 137 and we'll do no decimals. So then we add that our R array (i'm assuming)
+        => at the end we will take the average 
+
+
+lets say the percentage danceability is low like .23 => change to be .23 => 23% so we'll consider it low so Blue
+    => 23% of 255 is 58.6
+
+
+
+we'll order it like this,  0% - 25% || 25% - 50% || 50% - 75% || 75% -100%
+
+0-25: B or G color
+
+25-50: randomly pick between B or G
+
+50-75: randomly pick between R or low color
+
+75-100 pick the R
+
+we'll ask for 50 songs and divide it up into ten and each ten will get us one color! 

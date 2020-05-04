@@ -1,3 +1,9 @@
 #welcome {
     display: none;
 }
+
+#color-one {
+    height: 10em;
+    width: 10em;
+    margin: 0 auto;
+}

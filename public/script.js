@@ -53,12 +53,47 @@ async function init(data, token) {
 
 }
 
+// function toHexStr(red, green, blue) {
+//     var r = toHex(red);
+//     var g = toHex(green);
+//     var b = toHex(blue);
+//     return "#" + r + g + b;
+// }
+
+// function toHex(n) {
+//     var hex = n.toString(16);
+//     while (hex.length < 2) { hex = "0" + hex; }
+//     return hex;
+// }
+
+function rgbToHex(rgb) {
+    var hex = Number(rgb).toString(16);
+    if (hex.length < 2) {
+        hex = "0" + hex;
+    }
+    return hex;
+}
+
+function fullColorHex(r,g,b) {   
+    var red = rgbToHex(r);
+    var green = rgbToHex(g);
+    var blue = rgbToHex(b);
+    return "#" + red + green + blue;
+  };
+
 async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) {
+
+    let final_color;
+    let final_color_hex;
+
+    let RedAVG;
+    let GreenAVG;
+    let BlueAVG;
 
     for (let i = i_min; i < i_max; i++) {
 
         const audio_features = await getAudioFeatures(items[i].id, token);
-        
+
         // console.log(audio_features);
 
         // console.log("===========================");
@@ -76,17 +111,17 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) 
         // console.log(audio_analysis);
         // console.log("*************************");
 
-        console.log(R);
+        // console.log(R);
 
-        console.log(G);
+        // console.log(G);
 
-        console.log(B);
+        // console.log(B);
 
-        const RedAVG = calcAverage(R);
+        RedAVG = calcAverage(R);
 
-        const GreenAVG = calcAverage(G);
+        GreenAVG = calcAverage(G);
 
-        const BlueAVG = calcAverage(B);
+        BlueAVG = calcAverage(B);
 
         // console.log("Average Red is: " + RedAVG.toFixed());
 
@@ -97,7 +132,23 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) 
         $(`#color-${color_number}`).attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
     }
 
-    console.log(`*** DONE WITH COLOR ${color_number} ***`)
+    final_color = `rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()})`
+
+    console.log("FINAL COLOR AS RGB: " + final_color);
+
+    // final_color_hex = toHexStr(RedAVG.toFixed(), GreenAVG.toFixed(), BlueAVG.toFixed());
+
+    let red = RedAVG.toFixed();
+
+    let green = GreenAVG.toFixed();
+
+    let blue = BlueAVG.toFixed();
+
+    final_color_hex = fullColorHex(red, green, blue);
+
+    console.log("FINAL COLOR AS HEX: " + final_color_hex);
+
+    console.log(`*** DONE WITH COLOR ${color_number} ***`);
 
     R = [];
     G = [];
@@ -122,7 +173,7 @@ function calcEnergy(energy, R_array, G_array, B_array) {
     let color_value;
 
     if (energy <= .25) {
-       // console.log("G");
+        // console.log("G");
 
         chosen_color = "G"
 

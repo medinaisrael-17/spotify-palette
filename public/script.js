@@ -46,25 +46,9 @@ async function init(data, token) {
     console.log(items);
 
     calcColor(0, 10, items, token, R, G, B, 1, calcColor);
-    // calcColor(10, 20, items, token, R, G, B, "two");
-    // calcColor(20, 30, items, token, R, G, B, "three");
-    // calcColor(30, 40, items, token, R, G, B, "four");
-    // calcColor(40, 50, items, token, R, G, B, "five");
 
 }
 
-// function toHexStr(red, green, blue) {
-//     var r = toHex(red);
-//     var g = toHex(green);
-//     var b = toHex(blue);
-//     return "#" + r + g + b;
-// }
-
-// function toHex(n) {
-//     var hex = n.toString(16);
-//     while (hex.length < 2) { hex = "0" + hex; }
-//     return hex;
-// }
 
 function rgbToHex(rgb) {
     var hex = Number(rgb).toString(16);
@@ -94,22 +78,11 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) 
 
         const audio_features = await getAudioFeatures(items[i].id, token);
 
-        // console.log(audio_features);
-
-        // console.log("===========================");
-        // console.log("audio feature for " + items[i].name);
-        // console.log("danceability: " + audio_features.danceability.toFixed(2));
-
         const danceability = audio_features.danceability;
         const valence = audio_features.valence
 
         calcDanceability(danceability, R, G, B);
         calcValence(valence, R, G, B);
-        // const audio_features = await getAudioFeatures(items[14].id, token);
-        // console.log(audio_features);
-        // const audio_analysis = await getAudioAnalysis(items[14].id, token);
-        // console.log(audio_analysis);
-        // console.log("*************************");
 
         // console.log(R);
 
@@ -123,20 +96,12 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) 
 
         BlueAVG = calcAverage(B);
 
-        // console.log("Average Red is: " + RedAVG.toFixed());
-
-        // console.log("Average Green is: " + GreenAVG.toFixed());
-
-        // console.log("Average Blue is: " + BlueAVG.toFixed());
-
         $(`#color-${color_number}`).attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
     }
 
     final_color = `rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()})`
 
     console.log("FINAL COLOR AS RGB: " + final_color);
-
-    // final_color_hex = toHexStr(RedAVG.toFixed(), GreenAVG.toFixed(), BlueAVG.toFixed());
 
     let red = RedAVG.toFixed();
 
@@ -173,7 +138,6 @@ function calcEnergy(energy, R_array, G_array, B_array) {
     let color_value;
 
     if (energy <= .25) {
-        // console.log("G");
 
         chosen_color = "G"
 
@@ -181,18 +145,13 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
         G_array.push(color_value.toFixed());
 
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
         return;
     }
 
     else if (energy >= .25 && energy <= .5) {
         const b_or_g = Math.floor(Math.random() * 2)
 
-        //console.log("B or G " + b_or_g);
-
         if (b_or_g === 1) {
-            //console.log("G");
 
             chosen_color = "G"
 
@@ -200,20 +159,14 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
             G_array.push(color_value.toFixed());
 
-            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
             return;
         }
-
-        //console.log("B")
 
         chosen_color = "B"
 
         color_value = 255 * energy;
 
         B_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -222,10 +175,7 @@ function calcEnergy(energy, R_array, G_array, B_array) {
     else if (energy >= .5 && energy <= .75) {
         const high_or_low = Math.floor(Math.random() * 2);
 
-        //console.log("High or Low " + high_or_low);
-
         if (high_or_low === 1) {
-            //console.log("R");
 
             chosen_color = 'R'
 
@@ -233,12 +183,8 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
             R_array.push(color_value.toFixed());
 
-            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
             return;
         }
-
-        //console.log("G")
 
         chosen_color = 'G'
 
@@ -246,21 +192,16 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
         G_array.push(color_value.toFixed());
 
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
         return;
     }
 
     else if (energy >= .75) {
-        //console.log("R");
 
         chosen_color = 'R'
 
         color_value = 255 * energy;
 
         R_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -271,15 +212,12 @@ function calcValence(valence, R_array, G_array, B_array) {
     let color_value;
 
     if (valence <= .25) {
-        //console.log("B");
 
         chosen_color = "B"
 
         color_value = 255 * valence;
 
         B_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -287,10 +225,7 @@ function calcValence(valence, R_array, G_array, B_array) {
     else if (valence >= .25 && valence <= .5) {
         const b_or_g = Math.floor(Math.random() * 2)
 
-        //console.log("B or G " + b_or_g);
-
         if (b_or_g === 1) {
-            //console.log("G");
 
             chosen_color = "G"
 
@@ -298,20 +233,14 @@ function calcValence(valence, R_array, G_array, B_array) {
 
             G_array.push(color_value.toFixed());
 
-            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
             return;
         }
-
-        //console.log("B")
 
         chosen_color = "B"
 
         color_value = 255 * valence;
 
         B_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -320,23 +249,16 @@ function calcValence(valence, R_array, G_array, B_array) {
     else if (valence >= .5 && valence <= .75) {
         const high_or_low = Math.floor(Math.random() * 2);
 
-        //console.log("High or Low " + high_or_low);
-
         if (high_or_low === 1) {
-            //console.log("R");
-
+            
             chosen_color = 'R'
 
             color_value = 255 * valence;
 
             R_array.push(color_value.toFixed());
 
-            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
             return;
         }
-
-        //console.log("B")
 
         chosen_color = 'B'
 
@@ -344,21 +266,16 @@ function calcValence(valence, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
         return;
     }
 
     else if (valence >= .75) {
-        //console.log("R");
 
         chosen_color = 'R'
 
         color_value = 255 * valence;
 
         R_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -369,15 +286,12 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     let color_value;
 
     if (danceability <= .25) {
-        // console.log("B");
 
         chosen_color = "B"
 
         color_value = 255 * danceability;
 
         B_array.push(color_value.toFixed());
-
-        // console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -385,10 +299,7 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     else if (danceability >= .25 && danceability <= .5) {
         const b_or_g = Math.floor(Math.random() * 2)
 
-        // console.log("B or G " + b_or_g);
-
         if (b_or_g === 1) {
-            // console.log("G");
 
             chosen_color = "G"
 
@@ -396,20 +307,14 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
             G_array.push(color_value.toFixed());
 
-            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
             return;
         }
-
-        //console.log("B")
 
         chosen_color = "B"
 
         color_value = 255 * danceability;
 
         B_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -418,23 +323,15 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     else if (danceability >= .5 && danceability <= .75) {
         const high_or_low = Math.floor(Math.random() * 2);
 
-        //console.log("High or Low " + high_or_low);
-
         if (high_or_low === 1) {
-            //console.log("R");
-
             chosen_color = 'R'
 
             color_value = 255 * danceability;
 
             R_array.push(color_value.toFixed());
 
-            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
             return;
         }
-
-        //console.log("B")
 
         chosen_color = 'B'
 
@@ -442,21 +339,16 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
-
         return;
     }
 
     else if (danceability >= .75) {
-        //console.log("R");
 
         chosen_color = 'R'
 
         color_value = 255 * danceability;
 
         R_array.push(color_value.toFixed());
-
-        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }

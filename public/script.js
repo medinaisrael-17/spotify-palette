@@ -1,3 +1,9 @@
+let hex_1;
+let hex_2;
+let hex_3;
+let hex_4;
+let hex_5;
+
 function getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -38,9 +44,11 @@ async function init(data, token) {
     let G = [];
     let B = [];
 
+
     console.log(data);
 
     $("#welcome").hide();
+    $("#palette-card").show();
 
     const { items } = await getTopTracks(token);
     console.log(items);
@@ -58,12 +66,12 @@ function rgbToHex(rgb) {
     return hex;
 }
 
-function fullColorHex(r,g,b) {   
+function fullColorHex(r, g, b) {
     var red = rgbToHex(r);
     var green = rgbToHex(g);
     var blue = rgbToHex(b);
     return "#" + red + green + blue;
-  };
+};
 
 async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) {
 
@@ -110,6 +118,19 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) 
     let blue = BlueAVG.toFixed();
 
     final_color_hex = fullColorHex(red, green, blue);
+
+    switch (color_number) {
+        case 1:
+            hex_1 = final_color_hex;
+        case 2:
+            hex_2 = final_color_hex;
+        case 3:
+            hex_3 = final_color_hex;
+        case 4:
+            hex_4 = final_color_hex;
+        case 5:
+            hex_5 = final_color_hex;
+    }
 
     console.log("FINAL COLOR AS HEX: " + final_color_hex);
 
@@ -250,7 +271,7 @@ function calcValence(valence, R_array, G_array, B_array) {
         const high_or_low = Math.floor(Math.random() * 2);
 
         if (high_or_low === 1) {
-            
+
             chosen_color = 'R'
 
             color_value = 255 * valence;

@@ -1,15 +1,25 @@
-#welcome {
+#welcome, #palette-card {
     display: none;
+}
+
+#palette-card {
+    height: 40em;
+    width: 35em;
+    margin: auto;
+    margin-top: 6%;
+    padding: 3px;
+    padding-top: 12px;
+}
+
+#palette-card .row:nth-child(2) {
+    padding-left: 12px;
 }
 
 #palette-box {
     display: flex;
-    flex-wrap: wrap;
-    margin-top: 5em;
 }
 
-#color-1, #color-2, #color-3, #color-4, #color-5 {
-    height: 10em;
+.color {
+    height: 32em;
     width: 10em;
-    margin: 0 auto;
 }

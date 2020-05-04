@@ -1,20 +1,20 @@
 Spotify Palette Colors Template
 
-Orange - high danceability - R
+Orange - high danceability - R **
 
-blue - low danceability - B
+blue - low danceability - B **
 
-Yellow -  high valence (positivity) ...? - R
+Yellow -  high valence (positivity) ...? - R ***
 
-violet - low valence - B
+violet - low valence - B ***
 
-Red - hgih loudness - R
+Red - high loudness - R
 
 Greem - Low Loudness G 
 
-red orange - high energy - R
+red orange - high energy - R ***
 
-blue green - low energy G 
+blue green - low energy G  ***
 
 RGB - Red Green Blue 
 

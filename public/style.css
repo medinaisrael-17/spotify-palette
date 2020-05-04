@@ -2,7 +2,13 @@
     display: none;
 }
 
-#color-one {
+#palette-box {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5em;
+}
+
+#color-one, #color-two, #color-three, #color-four, #color-five {
     height: 10em;
     width: 10em;
     margin: 0 auto;

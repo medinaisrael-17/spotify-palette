@@ -45,13 +45,25 @@ async function init(data, token) {
     const { items } = await getTopTracks(token);
     console.log(items);
 
-    for (let i = 0; i < 10; i++) {
-        const audio_features = await getAudioFeatures(items[i].id, token);
-        console.log(audio_features);
+    calcColor(0, 10, items, token, R, G, B, 1, calcColor);
+    // calcColor(10, 20, items, token, R, G, B, "two");
+    // calcColor(20, 30, items, token, R, G, B, "three");
+    // calcColor(30, 40, items, token, R, G, B, "four");
+    // calcColor(40, 50, items, token, R, G, B, "five");
 
-        console.log("===========================");
-        console.log("audio feature for " + items[i].name);
-        console.log("danceability: " + audio_features.danceability.toFixed(2));
+}
+
+async function calcColor(i_min, i_max, items, token, R, G, B, color_number, cb) {
+
+    for (let i = i_min; i < i_max; i++) {
+
+        const audio_features = await getAudioFeatures(items[i].id, token);
+        
+        // console.log(audio_features);
+
+        // console.log("===========================");
+        // console.log("audio feature for " + items[i].name);
+        // console.log("danceability: " + audio_features.danceability.toFixed(2));
 
         const danceability = audio_features.danceability;
         const valence = audio_features.valence
@@ -62,7 +74,7 @@ async function init(data, token) {
         // console.log(audio_features);
         // const audio_analysis = await getAudioAnalysis(items[14].id, token);
         // console.log(audio_analysis);
-        console.log("*************************");
+        // console.log("*************************");
 
         console.log(R);
 
@@ -76,209 +88,33 @@ async function init(data, token) {
 
         const BlueAVG = calcAverage(B);
 
-        console.log("Average Red is: " + RedAVG.toFixed());
+        // console.log("Average Red is: " + RedAVG.toFixed());
 
-        console.log("Average Green is: " + GreenAVG.toFixed());
+        // console.log("Average Green is: " + GreenAVG.toFixed());
 
-        console.log("Average Blue is: " + BlueAVG.toFixed());
+        // console.log("Average Blue is: " + BlueAVG.toFixed());
 
-        $("#color-one").attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
+        $(`#color-${color_number}`).attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
     }
 
-    console.log("*** DONE WITH COLOR ONE ***")
+    console.log(`*** DONE WITH COLOR ${color_number} ***`)
 
     R = [];
     G = [];
     B = [];
 
-    for (let i = 10; i < 20; i++) {
-        const audio_features = await getAudioFeatures(items[i].id, token);
-        console.log(audio_features);
+    color_number++
 
-        console.log("===========================");
-        console.log("audio feature for " + items[i].name);
-        console.log("danceability: " + audio_features.danceability.toFixed(2));
+    const new_i_min = i_min + 10;
 
-        const danceability = audio_features.danceability;
-        const valence = audio_features.valence
+    const new_i_max = i_max + 10;
 
-        calcDanceability(danceability, R, G, B);
-        calcValence(valence, R, G, B);
-        // const audio_features = await getAudioFeatures(items[14].id, token);
-        // console.log(audio_features);
-        // const audio_analysis = await getAudioAnalysis(items[14].id, token);
-        // console.log(audio_analysis);
-        console.log("*************************");
-
-        console.log(R);
-
-        console.log(G);
-
-        console.log(B);
-
-        const RedAVG = calcAverage(R);
-
-        const GreenAVG = calcAverage(G);
-
-        const BlueAVG = calcAverage(B);
-
-        console.log("Average Red is: " + RedAVG.toFixed());
-
-        console.log("Average Green is: " + GreenAVG.toFixed());
-
-        console.log("Average Blue is: " + BlueAVG.toFixed());
-
-        $("#color-two").attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
+    if (new_i_min > 40 && new_i_max > 50) {
+        console.log("done");
+        return;
     }
 
-    console.log("*** DONE WITH COLOR TWO ***")
-
-    R = [];
-    G = [];
-    B = [];
-
-
-    for (let i = 20; i < 30; i++) {
-        const audio_features = await getAudioFeatures(items[i].id, token);
-        console.log(audio_features);
-
-        console.log("===========================");
-        console.log("audio feature for " + items[i].name);
-        console.log("danceability: " + audio_features.danceability.toFixed(2));
-
-        const danceability = audio_features.danceability;
-        const valence = audio_features.valence
-
-        calcDanceability(danceability, R, G, B);
-        calcValence(valence, R, G, B);
-        // const audio_features = await getAudioFeatures(items[14].id, token);
-        // console.log(audio_features);
-        // const audio_analysis = await getAudioAnalysis(items[14].id, token);
-        // console.log(audio_analysis);
-        console.log("*************************");
-
-        console.log(R);
-
-        console.log(G);
-
-        console.log(B);
-
-        const RedAVG = calcAverage(R);
-
-        const GreenAVG = calcAverage(G);
-
-        const BlueAVG = calcAverage(B);
-
-        console.log("Average Red is: " + RedAVG.toFixed());
-
-        console.log("Average Green is: " + GreenAVG.toFixed());
-
-        console.log("Average Blue is: " + BlueAVG.toFixed());
-
-        $("#color-three").attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
-    }
-
-    console.log("*** DONE WITH COLOR THREE ***")
-
-    R = [];
-    G = [];
-    B = [];
-
-
-    for (let i = 30; i < 40; i++) {
-        const audio_features = await getAudioFeatures(items[i].id, token);
-        console.log(audio_features);
-
-        console.log("===========================");
-        console.log("audio feature for " + items[i].name);
-        console.log("danceability: " + audio_features.danceability.toFixed(2));
-
-        const danceability = audio_features.danceability;
-        const valence = audio_features.valence
-
-        calcDanceability(danceability, R, G, B);
-        calcValence(valence, R, G, B);
-        // const audio_features = await getAudioFeatures(items[14].id, token);
-        // console.log(audio_features);
-        // const audio_analysis = await getAudioAnalysis(items[14].id, token);
-        // console.log(audio_analysis);
-        console.log("*************************");
-
-        console.log(R);
-
-        console.log(G);
-
-        console.log(B);
-
-        const RedAVG = calcAverage(R);
-
-        const GreenAVG = calcAverage(G);
-
-        const BlueAVG = calcAverage(B);
-
-        console.log("Average Red is: " + RedAVG.toFixed());
-
-        console.log("Average Green is: " + GreenAVG.toFixed());
-
-        console.log("Average Blue is: " + BlueAVG.toFixed());
-
-        $("#color-four").attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
-    }
-
-    console.log("*** DONE WITH COLOR FOUR ***")
-
-    R = [];
-    G = [];
-    B = [];
-
-
-    for (let i = 40; i < 50; i++) {
-        const audio_features = await getAudioFeatures(items[i].id, token);
-        console.log(audio_features);
-
-        console.log("===========================");
-        console.log("audio feature for " + items[i].name);
-        console.log("danceability: " + audio_features.danceability.toFixed(2));
-
-        const danceability = audio_features.danceability;
-        const valence = audio_features.valence;
-        const energy = audio_features.energy;
-
-        calcDanceability(danceability, R, G, B);
-        calcValence(valence, R, G, B);
-        calcEnergy(energy, R, G, B);
-        // const audio_features = await getAudioFeatures(items[14].id, token);
-        // console.log(audio_features);
-        // const audio_analysis = await getAudioAnalysis(items[14].id, token);
-        // console.log(audio_analysis);
-        console.log("*************************");
-
-        console.log(R);
-
-        console.log(G);
-
-        console.log(B);
-
-        const RedAVG = calcAverage(R);
-
-        const GreenAVG = calcAverage(G);
-
-        const BlueAVG = calcAverage(B);
-
-        console.log("Average Red is: " + RedAVG.toFixed());
-
-        console.log("Average Green is: " + GreenAVG.toFixed());
-
-        console.log("Average Blue is: " + BlueAVG.toFixed());
-
-        $("#color-five").attr("style", `background-color: rgb(${RedAVG.toFixed()}, ${GreenAVG.toFixed()}, ${BlueAVG.toFixed()}) `)
-    }
-
-    console.log("*** DONE WITH COLOR FIVE ***")
-
-    R = [];
-    G = [];
-    B = [];
+    cb(new_i_min, new_i_max, items, token, R, G, B, color_number, cb);
 }
 
 function calcEnergy(energy, R_array, G_array, B_array) {
@@ -286,7 +122,7 @@ function calcEnergy(energy, R_array, G_array, B_array) {
     let color_value;
 
     if (energy <= .25) {
-        console.log("G");
+       // console.log("G");
 
         chosen_color = "G"
 
@@ -294,7 +130,7 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
         G_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -302,10 +138,10 @@ function calcEnergy(energy, R_array, G_array, B_array) {
     else if (energy >= .25 && energy <= .5) {
         const b_or_g = Math.floor(Math.random() * 2)
 
-        console.log("B or G " + b_or_g);
+        //console.log("B or G " + b_or_g);
 
         if (b_or_g === 1) {
-            console.log("G");
+            //console.log("G");
 
             chosen_color = "G"
 
@@ -313,12 +149,12 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
             G_array.push(color_value.toFixed());
 
-            console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
             return;
         }
 
-        console.log("B")
+        //console.log("B")
 
         chosen_color = "B"
 
@@ -326,7 +162,7 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -335,10 +171,10 @@ function calcEnergy(energy, R_array, G_array, B_array) {
     else if (energy >= .5 && energy <= .75) {
         const high_or_low = Math.floor(Math.random() * 2);
 
-        console.log("High or Low " + high_or_low);
+        //console.log("High or Low " + high_or_low);
 
         if (high_or_low === 1) {
-            console.log("R");
+            //console.log("R");
 
             chosen_color = 'R'
 
@@ -346,12 +182,12 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
             R_array.push(color_value.toFixed());
 
-            console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
             return;
         }
 
-        console.log("G")
+        //console.log("G")
 
         chosen_color = 'G'
 
@@ -359,13 +195,13 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
         G_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
 
     else if (energy >= .75) {
-        console.log("R");
+        //console.log("R");
 
         chosen_color = 'R'
 
@@ -373,7 +209,7 @@ function calcEnergy(energy, R_array, G_array, B_array) {
 
         R_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -384,7 +220,7 @@ function calcValence(valence, R_array, G_array, B_array) {
     let color_value;
 
     if (valence <= .25) {
-        console.log("B");
+        //console.log("B");
 
         chosen_color = "B"
 
@@ -392,7 +228,7 @@ function calcValence(valence, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -400,10 +236,10 @@ function calcValence(valence, R_array, G_array, B_array) {
     else if (valence >= .25 && valence <= .5) {
         const b_or_g = Math.floor(Math.random() * 2)
 
-        console.log("B or G " + b_or_g);
+        //console.log("B or G " + b_or_g);
 
         if (b_or_g === 1) {
-            console.log("G");
+            //console.log("G");
 
             chosen_color = "G"
 
@@ -411,12 +247,12 @@ function calcValence(valence, R_array, G_array, B_array) {
 
             G_array.push(color_value.toFixed());
 
-            console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
             return;
         }
 
-        console.log("B")
+        //console.log("B")
 
         chosen_color = "B"
 
@@ -424,7 +260,7 @@ function calcValence(valence, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -433,10 +269,10 @@ function calcValence(valence, R_array, G_array, B_array) {
     else if (valence >= .5 && valence <= .75) {
         const high_or_low = Math.floor(Math.random() * 2);
 
-        console.log("High or Low " + high_or_low);
+        //console.log("High or Low " + high_or_low);
 
         if (high_or_low === 1) {
-            console.log("R");
+            //console.log("R");
 
             chosen_color = 'R'
 
@@ -444,12 +280,12 @@ function calcValence(valence, R_array, G_array, B_array) {
 
             R_array.push(color_value.toFixed());
 
-            console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
             return;
         }
 
-        console.log("B")
+        //console.log("B")
 
         chosen_color = 'B'
 
@@ -457,13 +293,13 @@ function calcValence(valence, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
 
     else if (valence >= .75) {
-        console.log("R");
+        //console.log("R");
 
         chosen_color = 'R'
 
@@ -471,7 +307,7 @@ function calcValence(valence, R_array, G_array, B_array) {
 
         R_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -482,7 +318,7 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     let color_value;
 
     if (danceability <= .25) {
-        console.log("B");
+        // console.log("B");
 
         chosen_color = "B"
 
@@ -490,7 +326,7 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        // console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -498,10 +334,10 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     else if (danceability >= .25 && danceability <= .5) {
         const b_or_g = Math.floor(Math.random() * 2)
 
-        console.log("B or G " + b_or_g);
+        // console.log("B or G " + b_or_g);
 
         if (b_or_g === 1) {
-            console.log("G");
+            // console.log("G");
 
             chosen_color = "G"
 
@@ -509,12 +345,12 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
             G_array.push(color_value.toFixed());
 
-            console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
             return;
         }
 
-        console.log("B")
+        //console.log("B")
 
         chosen_color = "B"
 
@@ -522,7 +358,7 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
@@ -531,10 +367,10 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     else if (danceability >= .5 && danceability <= .75) {
         const high_or_low = Math.floor(Math.random() * 2);
 
-        console.log("High or Low " + high_or_low);
+        //console.log("High or Low " + high_or_low);
 
         if (high_or_low === 1) {
-            console.log("R");
+            //console.log("R");
 
             chosen_color = 'R'
 
@@ -542,12 +378,12 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
             R_array.push(color_value.toFixed());
 
-            console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+            //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
             return;
         }
 
-        console.log("B")
+        //console.log("B")
 
         chosen_color = 'B'
 
@@ -555,13 +391,13 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
         B_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }
 
     else if (danceability >= .75) {
-        console.log("R");
+        //console.log("R");
 
         chosen_color = 'R'
 
@@ -569,7 +405,7 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
 
         R_array.push(color_value.toFixed());
 
-        console.log(`${chosen_color} value is ${color_value.toFixed()}`);
+        //console.log(`${chosen_color} value is ${color_value.toFixed()}`);
 
         return;
     }

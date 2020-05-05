@@ -121,16 +121,81 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
     let avg_valence = calcAverage(valence_arr);
 
     //HARD CODED TO TEST
-    high_valence_count = 100;
-    avg_valence = .4
-    high_energy_count=0;
-    high_dance_count=1
+    high_valence_count = 1;
+    // avg_valence = .4
+    high_energy_count = 1;
+    high_dance_count = 0;
 
     console.log("Average Energy: " + avg_energy.toFixed(2));
     console.log("Average Danceability: " + avg_dance.toFixed(2));
     console.log("Average Valence: " + avg_valence.toFixed(2));
 
     if (high_dance_count == high_energy_count && high_dance_count === high_valence_count) {
+        // neutral colors
+        // r 244 - 255
+        // g 218-255
+        // b 209-230
+
+        const red = Math.random() * (255 - 244) + 244;
+        const green = Math.random() * (255 - 218) + 218;
+        const blue = Math.random() * (230 - 209) + 209;
+
+        console.log(red, green, blue);
+
+
+        const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
+        // const base_color_hex = "#e990fd"
+
+        hex_3 = base_color_hex;
+
+        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+        const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
+
+        $("#color-1").attr("style", `background-color: ${hex_1}`);
+
+        const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
+
+        $("#color-2").attr("style", `background-color: ${hex_2}`);
+
+        const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
+
+        $("#color-4").attr("style", `background-color: ${hex_4}`);
+
+        const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
+
+        $("#color-5").attr("style", `background-color: ${hex_5}`);
+
+        return;
+
+    }
+
+    else if (high_valence_count == high_energy_count) {
+        //red to yellow color palette
+        const base_color_hex = "#ec5300";
+        // const base_color_hex = "#e990fd"
+
+        hex_3 = base_color_hex;
+
+        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+        const hex_1 = "#ec0000";
+
+        $("#color-1").attr("style", `background-color: ${hex_1}`);
+
+        const hex_2 = "#ec2400";
+
+        $("#color-2").attr("style", `background-color: ${hex_2}`);
+
+        const hex_4 = "#ec9b00";
+
+        $("#color-4").attr("style", `background-color: ${hex_4}`);
+
+        const hex_5 = '#ecca00';
+
+        $("#color-5").attr("style", `background-color: ${hex_5}`);
+
+        return;
 
     }
 
@@ -175,48 +240,47 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
     }
 
     else if (high_valence_count == high_dance_count) {
-        //pastel
+        //neon
 
-        //r 229-255
-        //g 123-185
-        //b 113-255
-        //Math.random() * (255 - 200) + 200
-        const red = Math.random() * (255 - 229) + 229;
-        const green = Math.random() * (185 - 123) + 123;
-        const blue = Math.random() * (255 - 113) + 113;
+        const which_neon = Math.floor(Math.random() * 4);
 
-        console.log(red, green, blue)
+        let base_color_hex;
 
-
-        const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
+        switch (which_neon) {
+            case 0:
+                base_color_hex = '#7fff00';
+                break;
+            case 1:
+                base_color_hex = '#faed27';
+                break;
+            case 2:
+                base_color_hex = '#fb33db';
+                break;
+            case 3:
+                base_color_hex = '#0310ea';
+                break;
+        }
 
         hex_3 = base_color_hex;
 
         $("#color-3").attr("style", `background-color: ${base_color_hex}`);
 
-        const compliment_one = hexToComplimentary(base_color_hex);
+        const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
 
-        hex_5 = compliment_one;
+        $("#color-1").attr("style", `background-color: ${hex_1}`);
 
-        $("#color-5").attr("style", `background-color: ${compliment_one}`);
+        const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
 
-        compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+        $("#color-2").attr("style", `background-color: ${hex_2}`);
 
-        hex_4 = compliment_one_darker;
+        const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
 
-        $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+        $("#color-4").attr("style", `background-color: ${hex_4}`);
 
-        const base_color_hex_lighter = tinycolor(base_color_hex).lighten(10).toHexString();
+        const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
 
-        hex_2 = base_color_hex_lighter;
+        $("#color-5").attr("style", `background-color: ${hex_5}`);
 
-        $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-        const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-        hex_1 = base_color_hex_darker;
-
-        $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
 
         return;
     }
@@ -462,19 +526,19 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
                 $("#color-3").attr("style", `background-color: ${base_color_hex}`);
 
                 const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-    
+
                 $("#color-1").attr("style", `background-color: ${hex_1}`);
-    
+
                 const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-    
+
                 $("#color-2").attr("style", `background-color: ${hex_2}`);
-    
+
                 const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-    
+
                 $("#color-4").attr("style", `background-color: ${hex_4}`);
-    
+
                 const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-    
+
                 $("#color-5").attr("style", `background-color: ${hex_5}`);
 
                 // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
@@ -742,8 +806,8 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             //b => 159 228
             //Math.random() * (255 - 200) + 200
             const red = Math.random() * (142 - 95) + 95;
-            const blue = Math.random() * (228-159) + 159;
-            
+            const blue = Math.random() * (228 - 159) + 159;
+
             console.log(red, blue);
 
             const base_color_hex = fullColorHex(red.toFixed(), 13, blue.toFixed());

@@ -162,6 +162,93 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
     console.log("Average Danceability: " + avg_dance.toFixed(2));
     console.log("Average Valence: " + avg_valence.toFixed(2));
 
+    if (high_energy_count == high_dance_count) {
+        //pastel
+
+        //r 229-255
+        //g 123-185
+        //b 113-255
+        //Math.random() * (255 - 200) + 200
+        const red = Math.random() * (255 - 229) + 229;
+        const green = Math.random() * (185 - 123) + 123;
+        const blue = Math.random() * (255 - 113) + 113;
+
+        console.log(red, green, blue)
+
+
+        const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
+        // const base_color_hex = "#e990fd"
+
+        hex_3 = base_color_hex;
+
+        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+        const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
+
+        $("#color-1").attr("style", `background-color: ${hex_1}`);
+
+        const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
+
+        $("#color-2").attr("style", `background-color: ${hex_2}`);
+
+        const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
+
+        $("#color-4").attr("style", `background-color: ${hex_4}`);
+
+        const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
+
+        $("#color-5").attr("style", `background-color: ${hex_5}`);
+
+        return;
+    }
+
+    if (high_valence_count == high_dance_count) {
+        //pastel
+
+        //r 229-255
+        //g 123-185
+        //b 113-255
+        //Math.random() * (255 - 200) + 200
+        const red = Math.random() * (255 - 229) + 229;
+        const green = Math.random() * (185 - 123) + 123;
+        const blue = Math.random() * (255 - 113) + 113;
+
+        console.log(red, green, blue)
+
+
+        const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
+
+        hex_3 = base_color_hex;
+
+        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+        const compliment_one = hexToComplimentary(base_color_hex);
+
+        hex_5 = compliment_one;
+
+        $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+        compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+        hex_4 = compliment_one_darker;
+
+        $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+        const base_color_hex_lighter = tinycolor(base_color_hex).lighten(10).toHexString();
+
+        hex_2 = base_color_hex_lighter;
+
+        $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+        const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+        hex_1 = base_color_hex_darker;
+
+        $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+        return;
+    }
+
     if (high_dance_count > high_energy_count && high_dance_count > high_valence_count) {
         console.log("high dance selected");
         //this will deal with orange so rgb red must 255 and blue must be 0
@@ -186,7 +273,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -223,7 +310,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -259,7 +346,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -300,7 +387,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -339,7 +426,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
                 compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
                 hex_4 = compliment_one_darker;
-                
+
                 $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
                 const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -374,7 +461,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -411,7 +498,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -453,7 +540,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -495,7 +582,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
@@ -535,7 +622,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
 
             hex_4 = compliment_one_darker;
-            
+
             $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
 
             const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();

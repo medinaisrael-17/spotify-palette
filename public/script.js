@@ -156,8 +156,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
     const avg_dance = calcAverage(dance_arr);
     const avg_valence = calcAverage(valence_arr);
 
-    //hard code to test
-    
 
 
     console.log("Average Energy: " + avg_energy.toFixed(2));
@@ -170,17 +168,114 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         //rgb(255, ???, ???)
         //75-174 
         //0-100
-        const green = Math.floor(Math.random() * 175) + 75;
-        const blue = Math.floor(Math.random() * 101);
 
-        console.log(green);
-        console.log(blue)
 
-        const base_color_hex = fullColorHex(255, green, blue);
+        if (avg_dance === .5) {
+            const base_color_hex = "#ffa500"
 
-        hex_3 = base_color_hex;
+            hex_3 = base_color_hex;
 
-        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+
+        else if (avg_dance > .5) {
+            const green = Math.floor(Math.random() * 175) + 75;
+            const blue = Math.floor(Math.random() * 101);
+
+            const base_color_hex = fullColorHex(255, green, blue);
+
+            hex_3 = base_color_hex;
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+        else {
+            const red = Math.floor(Math.random() * 66);
+            const green = Math.floor(Math.random() * 256);
+
+            const base_color_hex = fullColorHex(red, green, 255);
+
+            hex_3 = base_color_hex;
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
     }
 
     else if (high_energy_count > high_dance_count && high_energy_count > high_valence_count) {
@@ -189,29 +284,275 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         //rgb (255, ???, ???)
         //rgb(255, 0, ???)
 
-        const light_or_bright = Math.random(Math.floor() * 2)
-
-        if (light_or_bright === 1) {
-            const b_and_g = Math.floor(Math.random() * 101);
-
-            const base_color_hex = fullColorHex(255, b_and_g, b_and_g);
+        if (avg_energy === .5) {
+            const base_color_hex = "#ff0000"
 
             hex_3 = base_color_hex;
 
             $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
         }
 
-        const blue = Math.floor(Math.random() * 171);
- 
-        const base_color_hex = fullColorHex(255, 0, blue);
+        else if (avg_energy > .5) {
+            const light_or_bright = Math.random(Math.floor() * 2)
 
-        hex_3 = base_color_hex;
+            if (light_or_bright === 1) {
+                const b_and_g = Math.floor(Math.random() * 101);
 
-        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+                const base_color_hex = fullColorHex(255, b_and_g, b_and_g);
+
+                hex_3 = base_color_hex;
+
+                $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+                const compliment_one = hexToComplimentary(base_color_hex);
+
+                hex_5 = compliment_one;
+
+                $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+                compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+                hex_4 = compliment_one_darker;
+                
+                $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+                const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+                hex_2 = base_color_hex_lighter;
+
+                $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+                const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+                hex_1 = base_color_hex_darker;
+
+                $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+                return;
+            }
+
+            const blue = Math.floor(Math.random() * 171);
+
+            const base_color_hex = fullColorHex(255, 0, blue);
+
+            hex_3 = base_color_hex;
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+
+        else {
+            const red = Math.floor(Math.random() * 156);
+            const blue = Math.floor(Math.random() * 133);
+
+            const base_color_hex = fullColorHex(red, 255, blue);
+
+            hex_3 = base_color_hex;
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+
     }
 
     else if (high_valence_count > high_dance_count && high_valence_count > high_energy_count) {
-        
+        console.log("high valence selected");
+        //this will deal with red
+        //rgb (255, ???, ???)
+        //rgb(255, 0, ???)
+
+        if (avg_valence === .5) {
+            const base_color_hex = "#ffff00"
+
+            hex_3 = base_color_hex;
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+
+        else if (avg_valence > .5) {
+            //200-256
+
+            const test = Math.random() * (255 - 200) + 200;
+
+            console.log(test);
+
+            const base_color_hex = fullColorHex(255, test.toFixed(), 0);
+
+            hex_3 = base_color_hex;
+
+            console.log(base_color_hex);
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+
+        else {
+            //r => 95-142
+            //g => 13
+            //b => 159 228
+            const red = Math.floor(Math.random() * 143) + 95;
+            const blue = Math.floor(Math.random() * 229) + 159;
+
+            const base_color_hex = fullColorHex(red, 13, blue);
+
+            hex_3 = base_color_hex;
+
+            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+            const compliment_one = hexToComplimentary(base_color_hex);
+
+            hex_5 = compliment_one;
+
+            $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+            compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+            hex_4 = compliment_one_darker;
+            
+            $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+            const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+            hex_2 = base_color_hex_lighter;
+
+            $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+            const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+            hex_1 = base_color_hex_darker;
+
+            $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+            return;
+        }
+
     }
 
 

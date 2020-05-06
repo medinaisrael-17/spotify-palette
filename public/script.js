@@ -70,6 +70,8 @@ $("#view_images").click(function () {
     $("#similar-images").removeClass("slideOutUp");
     $("#similar-images").addClass("slideInUp");
     $("#view_images").addClass("disabled");
+
+    webScrape();
 })
 
 function getHashParams() {
@@ -126,6 +128,35 @@ async function init(data, token) {
     console.log(items);
 
     calcColor(0, 50, items, token, R, G, B);
+
+}
+
+async function webScrape() {
+
+    const colors = {
+        hex_1: removeHash(hex_1.toHexString()),
+        hex_2: removeHash(hex_2.toHexString()),
+        hex_3: removeHash(hex_3),
+        hex_4: removeHash(hex_4.toHexString()),
+        hex_5: removeHash(hex_5.toHexString()),
+    }
+
+    console.log(colors);
+
+    const url = `/${colors.hex_1}/${colors.hex_2}/${colors.hex_3}/${colors.hex_4}/${colors.hex_5}`;
+
+    const moveForward = await sendColors(url);
+
+    console.log(moveForward);
+
+    if(moveForward === "OK") {
+
+        
+
+        return;
+    }
+
+    console.log("Looks like we encountered an error :-(");
 
 }
 
@@ -714,6 +745,17 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     }
 }
 
+function sendColors(url) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            method: "POST",
+            url: url,
+        }).then(function(response) {
+            resolve(response);
+        })
+    })
+}
+
 function getTopTracks(token) {
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -870,6 +912,10 @@ function assignComplementary(base_color_hex) {
     hex_1 = base_color_hex_darker;
 
     $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+}
+
+function removeHash(hex) {
+    return hex.slice(1, hex.length);
 }
 
 function hexToComplimentary(hex) {

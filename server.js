@@ -145,6 +145,10 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
+app.get("/scrape", function(req, res) {
+  
+})
+
 // console.log('Listening on 8888');
 app.listen(PORT, () => {
     console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT)

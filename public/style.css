@@ -1,18 +1,41 @@
-#welcome, #palette-card {
+body {
+    overflow: hidden;
+    height: 100vh;
+}
+
+#welcome, #palette-card, #loader, #toggle-div, #top-albums-div {
     display: none;
 }
 
+#loader {
+    margin: auto;
+    width: 8%;
+    margin-top: 5%;
+}
+
+/* Palette Card */
+
 #palette-card {
+    overflow-x: hidden;
     height: 40em;
     width: 35em;
     margin: auto;
-    margin-top: 2%;
+    margin-top: 5%;
     padding: 3px;
     padding-top: 12px;
+    margin-bottom: 3em;
+}
+
+#palette-box {
+    overflow: hidden;
 }
 
 #palette-card .row:nth-child(2) {
     padding-left: 12px;
+}
+
+#palette-card .row:nth-child(2) h5 {
+    margin-top: 30px;
 }
 
 #palette-box {
@@ -20,6 +43,51 @@
 }
 
 .color {
+    text-align: center;
     height: 32em;
     width: 10em;
+    transition: width 1s;
+}
+
+.color:hover {
+    width: 15em;
+}
+
+.color-text {
+    display: none;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+
+/* Top Albums */
+
+#top-albums-div {
+    height: 100vh;
+    animation-delay: 600ms;
+}
+
+.song-div {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+}
+
+.song {
+    text-align: center;
+    width: 12em;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 2em;
+    position: relative;
+}
+
+.song img {
+    width: 100%;
+}
+
+.playbutton {
+    position: absolute;
+    top: 0;
+    left: 0;
 }

@@ -12,6 +12,9 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- Animate.CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
@@ -26,16 +29,73 @@
         <a class="animated fadeIn delay-1s" href="/login">Sign in to Spotify to continue!</a>
     </header>
 
-    <section id="palette-card" class="z-depth-3">
+    <div id="loader">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="palette-card" class=" animated slideInUp z-depth-3">
         <div class="row">
             <div class="col s12">
 
                 <div id="palette-box">
-                    <div id="color-1" class="color"></div>
-                    <div id="color-2" class="color"></div>
-                    <div id="color-3" class="color"></div>
-                    <div id="color-4" class="color"></div>
-                    <div id="color-5" class="color"></div>
+                    <div id="color-1" class="color animated slideInDown delay-1s"><span id="color-1-text"
+                            class="color-text"></span></div>
+                    <div id="color-2" class="color animated slideInDown delay-2s"><span id="color-2-text"
+                            class="color-text"></span></div>
+                    <div id="color-3" class="color animated slideInDown delay-3s"><span id="color-3-text"
+                            class="color-text"></span></div>
+                    <div id="color-4" class="color animated slideInDown delay-4s"><span id="color-4-text"
+                            class="color-text"></span></div>
+                    <div id="color-5" class="color animated slideInDown delay-5s"><span id="color-5-text"
+                            class="color-text"></span></div>
                 </div>
 
             </div>
@@ -46,6 +106,40 @@
         </div>
 
     </section>
+
+    <section id="top-albums-div" class="animated">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <h3>See What Influenced Your Palette</h3>
+                    <h5>Your Top Songs (past 6 months)</h5>
+                    <div class="divider"></div>
+                    <div class="song-div">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- add delay back -->
+    <div id="toggle-div" class="animated slideInRight ">
+        <!-- <a id="toggleAlbums" class="waves-effect waves-light btn animated slideInUp">See what songs inlfuenced your
+            colors!</a> -->
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large blue">
+                <i class="large material-icons">menu</i>
+            </a>
+            <ul>
+                <li><a id="view_music" class="btn-floating red"><i class="material-icons">library_music</i></a></li>
+                <li><a id="view_palette" class="btn-floating yellow darken-1"><i class="material-icons">palette</i></a>
+                </li>
+                <li><a id="view_images" class="btn-floating green"><i class="material-icons">image</i></a></li>
+            </ul>
+        </div>
+    </div>
+
+
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

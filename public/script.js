@@ -3,6 +3,7 @@ let hex_2;
 let hex_3;
 let hex_4;
 let hex_5;
+let base_color_complement;
 
 let dance_arr = []
 let energy_arr = [];
@@ -11,6 +12,31 @@ let valence_arr = [];
 let high_dance_count = 0;
 let high_energy_count = 0;
 let high_valence_count = 0;
+
+document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems, {
+        direction: 'left',
+        hoverEnabled: false
+    });
+});
+
+$(".color").hover(function () {
+    $(this).children().css("display", "block");
+}, function () {
+    $(this).children().css("display", "none");
+});
+
+$("#view_music").click(function () {
+    $("#palette-card").removeClass("slideInUp");
+    $("#palette-card").addClass("faster");
+    $("#palette-card").addClass("slideOutUp");
+    setTimeout(function () { $("#palette-card").css("display", "none") }, 600)
+
+    $("#top-albums-div").show()
+    $("#top-albums-div").removeClass("slideOutUp");
+    $("#top-albums-div").addClass("slideInUp");
+})
 
 function getHashParams() {
     var hashParams = {};
@@ -56,15 +82,53 @@ async function init(data, token) {
     console.log(data);
 
     $("#welcome").hide();
-    $("#palette-card").show();
+    $("#palette-card").hide();
+    $("toggle-div").hide();
+    $("#loader").show()
 
     $("#name").text(`${data.display_name}'s`)
 
     const { items } = await getTopTracks(token);
     console.log(items);
 
-    calcColor(0, 50, items, token, R, G, B, 3);
+    calcColor(0, 50, items, token, R, G, B);
 
+}
+
+async function populateTopTen() {
+
+    const { items } = await getTopTracks(access_token);
+
+    $("#top-albums-div h3").css("color", base_color_complement);
+
+    for (let i = 0; i < 12; i++) {
+
+        let border_color;
+
+        if (i <= 3) {
+            border_color = hex_1;
+        }
+
+        else if (i > 3 && i <= 7) {
+            border_color = hex_3;
+        }
+
+        else if (i > 7 && i <= 11) {
+            border_color = hex_5
+        }
+
+        const song_html = $(`
+        <div class="song">
+            <div class="playbutton">
+                <i class="large material-icons">play_circle_outline</i>
+            </div>
+            <a href="${items[i].external_urls.spotify}" target="_blank"><img alt="album cover" class="hoverable" style="border: 5px solid ${border_color}" src="${items[i].album.images[0].url}"></a>
+            <strong><span class="song-name truncate">${items[i].name}</span></strong>
+        </div>
+        `);
+
+        $(".song-div").append(song_html);
+    }
 }
 
 function rgbToHex(rgb) {
@@ -82,7 +146,7 @@ function fullColorHex(r, g, b) {
     return "#" + red + green + blue;
 };
 
-async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
+async function calcColor(i_min, i_max, items, token, R, G, B) {
     let RedAVG;
     let GreenAVG;
     let BlueAVG;
@@ -106,12 +170,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         BlueAVG = calcAverage(B);
     }
 
-    console.log("R: " + R);
-
-    console.log("G: " + G);
-
-    console.log("B: " + B);
-
     console.log("Amount of songs with high energy: " + high_energy_count);
     console.log("Amount of songs with high danceability: " + high_dance_count);
     console.log("Amount of songs with high valence: " + high_valence_count);
@@ -120,17 +178,15 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
     let avg_dance = calcAverage(dance_arr);
     let avg_valence = calcAverage(valence_arr);
 
-    //HARD CODED TO TEST
-    high_valence_count = 1;
-    // avg_valence = .4
-    high_energy_count = 1;
-    high_dance_count = 0;
+    //hard coded to test
+
 
     console.log("Average Energy: " + avg_energy.toFixed(2));
     console.log("Average Danceability: " + avg_dance.toFixed(2));
     console.log("Average Valence: " + avg_valence.toFixed(2));
 
     if (high_dance_count == high_energy_count && high_dance_count === high_valence_count) {
+        console.log("all the same!")
         // neutral colors
         // r 244 - 255
         // g 218-255
@@ -146,60 +202,38 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
         // const base_color_hex = "#e990fd"
 
-        hex_3 = base_color_hex;
+        assignAnalogousBigSpin(base_color_hex);
 
-        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+        $("#loader").hide();
 
-        const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
+        $("#palette-card").show();
 
-        $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-        const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
-
-        $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-        const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
-
-        $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-        const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
-
-        $("#color-5").attr("style", `background-color: ${hex_5}`);
+        $("#toggle-div").show()
 
         return;
 
     }
 
-    else if (high_valence_count == high_energy_count) {
+    else if (high_valence_count == high_energy_count && high_valence_count > high_dance_count) {
+        console.log("similar valence and energy");
         //red to yellow color palette
         const base_color_hex = "#ec5300";
         // const base_color_hex = "#e990fd"
 
-        hex_3 = base_color_hex;
+        assignAnalogousBigSpin(base_color_hex);
 
-        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+        $("#loader").hide();
 
-        const hex_1 = "#ec0000";
+        $("#palette-card").show();
 
-        $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-        const hex_2 = "#ec2400";
-
-        $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-        const hex_4 = "#ec9b00";
-
-        $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-        const hex_5 = '#ecca00';
-
-        $("#color-5").attr("style", `background-color: ${hex_5}`);
+        $("#toggle-div").show()
 
         return;
 
     }
 
-    else if (high_energy_count == high_dance_count) {
+    else if (high_energy_count == high_dance_count && high_energy_count > high_valence_count) {
+        console.log("similar energy and dance")
         //pastel
 
         //r 229-255
@@ -216,30 +250,19 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
         // const base_color_hex = "#e990fd"
 
-        hex_3 = base_color_hex;
+        assignAnalogousBigSpin(base_color_hex);
 
-        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+        $("#loader").hide();
 
-        const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
+        $("#palette-card").show();
 
-        $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-        const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
-
-        $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-        const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
-
-        $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-        const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
-
-        $("#color-5").attr("style", `background-color: ${hex_5}`);
+        $("#toggle-div").show()
 
         return;
     }
 
-    else if (high_valence_count == high_dance_count) {
+    else if (high_valence_count == high_dance_count && high_valence_count > high_energy_count) {
+        console.log("similar valence and dance")
         //neon
 
         const which_neon = Math.floor(Math.random() * 4);
@@ -261,26 +284,14 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
                 break;
         }
 
-        hex_3 = base_color_hex;
 
-        $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+        assignAnalogousBigSpin(base_color_hex);
 
-        const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
+        $("#loader").hide();
 
-        $("#color-1").attr("style", `background-color: ${hex_1}`);
+        $("#palette-card").show();
 
-        const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
-
-        $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-        const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
-
-        $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-        const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
-
-        $("#color-5").attr("style", `background-color: ${hex_5}`);
-
+        $("#toggle-div").show()
 
         return;
     }
@@ -296,51 +307,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         if (avg_dance === .5) {
             const base_color_hex = "#ffa500"
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
@@ -351,51 +318,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
 
             const base_color_hex = fullColorHex(255, green, blue);
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
@@ -405,51 +328,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
 
             const base_color_hex = fullColorHex(red, green, 255);
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
@@ -464,51 +343,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         if (avg_energy === .5) {
             const base_color_hex = "#ff0000"
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
@@ -521,51 +356,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
 
                 const base_color_hex = fullColorHex(255, b_and_g, b_and_g);
 
-                hex_3 = base_color_hex;
-
-                $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-                const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-                $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-                const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-                $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-                const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-                $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-                const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-                $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-                // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-                // const compliment_one = hexToComplimentary(base_color_hex);
-
-                // hex_5 = compliment_one;
-
-                // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-                // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-                // hex_4 = compliment_one_darker;
-
-                // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-                // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-                // hex_2 = base_color_hex_lighter;
-
-                // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-                // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-                // hex_1 = base_color_hex_darker;
-
-                // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+                assignAnalogousSmallSpin(base_color_hex)
 
                 return;
             }
@@ -574,51 +365,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
 
             const base_color_hex = fullColorHex(255, 0, blue);
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
@@ -629,53 +376,9 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
 
             const base_color_hex = fullColorHex(red, 255, blue);
 
-            hex_3 = base_color_hex;
-
-            console.log(hex_3);
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
+            assignAnalogousSmallSpin(base_color_hex);
 
             $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
 
             return;
         }
@@ -691,111 +394,17 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
         if (avg_valence === .5) {
             const base_color_hex = "#ffff00"
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
 
         else if (avg_valence > .5) {
-            //200-256
-
             const test = Math.random() * (255 - 200) + 200;
-
-            console.log(test);
 
             const base_color_hex = fullColorHex(255, test.toFixed(), 0);
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // console.log(base_color_hex);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex)
 
             return;
         }
@@ -804,7 +413,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
             //r => 95-142
             //g => 13
             //b => 159 228
-            //Math.random() * (255 - 200) + 200
+
             const red = Math.random() * (142 - 95) + 95;
             const blue = Math.random() * (228 - 159) + 159;
 
@@ -812,72 +421,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B, color_number) {
 
             const base_color_hex = fullColorHex(red.toFixed(), 13, blue.toFixed());
 
-            hex_3 = base_color_hex;
-
-            $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            const hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
-
-            $("#color-1").attr("style", `background-color: ${hex_1}`);
-
-            const hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
-
-            $("#color-2").attr("style", `background-color: ${hex_2}`);
-
-            const hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
-
-            $("#color-4").attr("style", `background-color: ${hex_4}`);
-
-            const hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
-
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
-
-            // $("#color-3").attr("style", `background-color: ${base_color_hex}`);
-
-            // const compliment_one = hexToComplimentary(base_color_hex);
-
-            // hex_5 = compliment_one;
-
-            // $("#color-5").attr("style", `background-color: ${compliment_one}`);
-
-            // compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
-
-            // hex_4 = compliment_one_darker;
-
-            // $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
-
-            // const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
-
-            // hex_2 = base_color_hex_lighter;
-
-            // $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
-
-            // const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
-
-            // hex_1 = base_color_hex_darker;
-
-            // $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+            assignAnalogousSmallSpin(base_color_hex);
 
             return;
         }
 
     }
 
-
-
-    // R = [];
-    // G = [];
-    // B = [];
-
-
-    // const new_i_min = i_min + 10;
-
-    // const new_i_max = i_max + 10;
-
-    // if (new_i_min > 20 && new_i_max > 30) {
-
-    //     return;
-    // }
 }
 
 function calcEnergy(energy, R_array, G_array, B_array) {
@@ -1183,6 +733,110 @@ function calcAverage(array) {
 
     return total / parseInt(array.length);
 };
+
+function assignAnalogousBigSpin(base_color_hex) {
+    hex_3 = base_color_hex;
+
+    const complement_base = hexToComplimentary(hex_3);
+
+    $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+    $("#color-3-text").text(hex_3);
+
+    base_color_complement = tinycolor(complement_base).darken(20).toHexString();
+
+    hex_1 = tinycolor(base_color_hex).spin(25).saturate(20);
+
+    $("#color-1").attr("style", `background-color: ${hex_1}`);
+
+    $("#color-1-text").text(hex_1);
+
+    hex_2 = tinycolor(base_color_hex).spin(20).desaturate(20).darken(6);
+
+    $("#color-2").attr("style", `background-color: ${hex_2}`);
+
+    $("#color-2-text").text(hex_2);
+
+    hex_4 = tinycolor(base_color_hex).spin(-20).desaturate(20).darken(6);
+
+    $("#color-4").attr("style", `background-color: ${hex_4}`);
+
+    $("#color-4-text").text(hex_4);
+
+    hex_5 = tinycolor(base_color_hex).spin(-25).saturate(20);
+
+    $("#color-5").attr("style", `background-color: ${hex_5}`);
+
+    $("#color-5-text").text(hex_5);
+
+    populateTopTen();
+}
+
+function assignAnalogousSmallSpin(base_color_hex) {
+    hex_3 = base_color_hex;
+
+    const complement_base = hexToComplimentary(hex_3);
+
+    base_color_complement = tinycolor(complement_base).darken(20).toHexString();
+
+    $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+    $("#color-3-text").text(hex_3);
+
+    hex_1 = tinycolor(base_color_hex).spin(15).saturate(20);
+
+    $("#color-1").attr("style", `background-color: ${hex_1}`);
+
+    $("#color-1-text").text(hex_1);
+
+    hex_2 = tinycolor(base_color_hex).spin(10).desaturate(20).darken(6);
+
+    $("#color-2").attr("style", `background-color: ${hex_2}`);
+
+    $("#color-2-text").text(hex_2);
+
+    hex_4 = tinycolor(base_color_hex).spin(-10).desaturate(20).darken(6);
+
+    $("#color-4").attr("style", `background-color: ${hex_4}`);
+
+    $("#color-4-text").text(hex_4);
+
+    hex_5 = tinycolor(base_color_hex).spin(-15).saturate(20);
+
+    $("#color-5").attr("style", `background-color: ${hex_5}`);
+
+    $("#color-5-text").text(hex_5);
+
+    populateTopTen();
+}
+
+function assignComplementary(base_color_hex) {
+    $("#color-3").attr("style", `background-color: ${base_color_hex}`);
+
+    const compliment_one = hexToComplimentary(base_color_hex);
+
+    hex_5 = compliment_one;
+
+    $("#color-5").attr("style", `background-color: ${compliment_one}`);
+
+    compliment_one_darker = tinycolor(compliment_one).darken(20).toHexString()
+
+    hex_4 = compliment_one_darker;
+
+    $("#color-4").attr("style", `background-color: ${compliment_one_darker}`);
+
+    const base_color_hex_lighter = tinycolor(base_color_hex).lighten(20).toHexString();
+
+    hex_2 = base_color_hex_lighter;
+
+    $("#color-2").attr("style", `background-color: ${base_color_hex_lighter}`);
+
+    const base_color_hex_darker = tinycolor(base_color_hex).darken(20).toHexString();
+
+    hex_1 = base_color_hex_darker;
+
+    $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+}
 
 function hexToComplimentary(hex) {
 

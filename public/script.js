@@ -13,6 +13,7 @@ let high_dance_count = 0;
 let high_energy_count = 0;
 let high_valence_count = 0;
 
+//Materialize JS
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.fixed-action-btn');
     var instances = M.FloatingActionButton.init(elems, {
@@ -21,14 +22,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+//end
+
 $(".color").hover(function () {
     $(this).children().css("display", "block");
 }, function () {
     $(this).children().css("display", "none");
 });
 
+$(document).on("mouseenter", ".song", function () {
+    $(this).children(".playbutton").css("display", "block");
+}).on("mouseleave", ".song", function () {
+    $(this).children(".playbutton").css("display", "none");
+})
+
+$(document).on("mouseenter", ".image", function () {
+    $(this).children(".source-box").removeClass("fadeOutLeft");
+    $(this).children(".source-box").addClass("fadeInLeft");
+    $(this).children(".source-box").css("display", "block");
+}).on("mouseleave", ".image", function () {
+    $(this).children(".source-box").removeClass("fadeInLeft")
+    $(this).children(".source-box").addClass("fadeOutLeft");
+    // $(this).children(".source-box").css("display", "none");
+})
+
 $("#view_music").click(function () {
     $("#palette-card").removeClass("slideInUp");
+    $("#view_palette").removeClass("disabled")
     $("#palette-card").addClass("faster");
     $("#palette-card").addClass("slideOutUp");
     setTimeout(function () { $("#palette-card").css("display", "none") }, 600)
@@ -36,6 +56,20 @@ $("#view_music").click(function () {
     $("#top-albums-div").show()
     $("#top-albums-div").removeClass("slideOutUp");
     $("#top-albums-div").addClass("slideInUp");
+    $("#view_music").addClass("disabled");
+})
+
+$("#view_images").click(function () {
+    $("#top-albums-div").removeClass("slideInUp");
+    $("#view_music").removeClass("disabled")
+    $("#top-albums-div").addClass("faster");
+    $("#top-albums-div").addClass("slideOutUp");
+    setTimeout(function () { $("#top-albums-div").css("display", "none") }, 600)
+
+    $("#similar-images").show()
+    $("#similar-images").removeClass("slideOutUp");
+    $("#similar-images").addClass("slideInUp");
+    $("#view_images").addClass("disabled");
 })
 
 function getHashParams() {
@@ -119,8 +153,8 @@ async function populateTopTen() {
 
         const song_html = $(`
         <div class="song">
-            <div class="playbutton">
-                <i class="large material-icons">play_circle_outline</i>
+            <div class="playbutton animated pulse">
+                <i class="medium material-icons">play_circle_outline</i>
             </div>
             <a href="${items[i].external_urls.spotify}" target="_blank"><img alt="album cover" class="hoverable" style="border: 5px solid ${border_color}" src="${items[i].album.images[0].url}"></a>
             <strong><span class="song-name truncate">${items[i].name}</span></strong>

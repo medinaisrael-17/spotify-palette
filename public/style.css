@@ -3,7 +3,7 @@ body {
     height: 100vh;
 }
 
-#welcome, #palette-card, #loader, #toggle-div, #top-albums-div {
+#welcome, #palette-card, #loader, #toggle-div, #top-albums-div, #similar-images {
     display: none;
 }
 
@@ -87,7 +87,66 @@ body {
 }
 
 .playbutton {
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 28%;
+    left: 33%;
+    display: none;
+}
+
+/* Similar Images */
+
+#similar-images {
+    height: 100vh;
+    animation-delay: 600ms;
+}
+
+.images-div {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.palette-div {
+    width: 100%;
+    margin-top: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: left;
+}
+
+.single-palette {
+    border-radius: 50%;
+    width: 2em;
+    height: 100%;
+    margin-right: 1em;
+}
+
+.image {
+    position: relative;
+    overflow: hidden;
+}
+
+.image img {
+    height: 100%;
+}
+
+.source-box {
+    color: white;
+    position: absolute;
+    top: 3%;
+    left: 2%;
+    border: 1px solid white;
+    width: 20%;
+    height: 10%;
+    text-align: center;
+    display: none;
+}
+
+.source-box a {
+    text-shadow: 2px 2px 4px #000000;
+    color: white;
 }

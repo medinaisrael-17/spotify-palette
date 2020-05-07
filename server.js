@@ -13,7 +13,7 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var axios = require("axios");
-var cheerio = require("cheerio");
+const puppeteer = require("puppeteer")
 
 var client_id = 'a54e6a032df746d08b55d6ced8999997'; // Your client id
 var client_secret = 'e0e69b2651704aa3bdccc64c23062e58'; // Your secret
@@ -155,30 +155,79 @@ var hex_4;
 var hex_5;
 
 app.post("/:hex1/:hex2/:hex3/:hex4/:hex5", function (req, res) {
-
-  console.log(req.params.hex1);
-  console.log(req.params.hex2);
-  console.log(req.params.hex3);
-  console.log(req.params.hex4);
-  console.log(req.params.hex5);
-
   hex_1 = req.params.hex1;
   hex_2 = req.params.hex2;
   hex_3 = req.params.hex3;
   hex_4 = req.params.hex4;
   hex_5 = req.params.hex5;
 
+  console.log(hex_1, hex_2, hex_3, hex_4, hex_5)
+
   res.sendStatus(200)
 })
 
-app.get("/scrape", function (req, res) {
+app.get("/scrape", async function (req, res) {
+  
   var url = `https://artsexperiments.withgoogle.com/artpalette/colors/${hex_1}-${hex_2}-${hex_3}-${hex_4}-${hex_5}`
-  axios.get(url).then(function(response) {
-    var $ = cheerio.load(response.data);
-  })
+
+  var img_data = await webscrape(url);
+
+  console.log("DATA ABOUT TO SEND");
+  console.log(img_data);
+
+  res.json(img_data);
+
 })
 
+
+async function webscrape(url) {
+
+  var browser = await puppeteer.launch();
+  var page = await browser.newPage();
+
+  await page.goto(url, { waitUntil: "networkidle2" });
+
+  const img_data = await page.evaluate(function () {
+
+    var data = []; 
+
+    // var first_result_img_src = document.querySelector(".first-item").children[0].firstElementChild.getAttribute("src");
+
+    // var first_result_src = document.querySelector(".first-item").children[1].getAttribute("href");
+
+    // const first_data = {
+    //   img_url: first_result_img_src,
+    //   img_src: first_result_src 
+    // }
+
+    // data.push(first_data);
+
+    var other_results = document.querySelectorAll(".result-item");
+
+    console.log(other_results);
+
+    for ( var i = 0; i < 50; i++) {
+      var other_result_img_src = other_results[i].children[0].firstElementChild.getAttribute("src");
+
+      var other_result_src = other_results[i].children[1].getAttribute("href");
+
+      data.push({
+        img_url: other_result_img_src,
+        img_src: other_result_src
+      })
+    }
+
+    return data;
+  })
+
+  console.log(img_data);
+
+  await browser.close()
+
+  return img_data;
+}
+
 // console.log('Listening on 8888');
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT)
 })

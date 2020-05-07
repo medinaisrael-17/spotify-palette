@@ -37,12 +37,12 @@ $(document).on("mouseenter", ".song", function () {
 })
 
 $(document).on("mouseenter", ".image", function () {
-    $(this).children(".source-box").removeClass("fadeOutLeft");
-    $(this).children(".source-box").addClass("fadeInLeft");
+    $(this).children(".source-box").removeClass("fadeOut");
+    $(this).children(".source-box").addClass("fadeIn");
     $(this).children(".source-box").css("display", "block");
 }).on("mouseleave", ".image", function () {
-    $(this).children(".source-box").removeClass("fadeInLeft")
-    $(this).children(".source-box").addClass("fadeOutLeft");
+    $(this).children(".source-box").removeClass("fadeIn")
+    $(this).children(".source-box").addClass("fadeOut");
     // $(this).children(".source-box").css("display", "none");
 })
 
@@ -60,6 +60,12 @@ $("#view_music").click(function () {
 })
 
 $("#view_images").click(function () {
+    $("#palette-1").css("background-color", hex_1);
+    $("#palette-2").css("background-color", hex_2);
+    $("#palette-3").css("background-color", hex_3);
+    $("#palette-4").css("background-color", hex_4);
+    $("#palette-5").css("background-color", hex_5);
+
     $("#top-albums-div").removeClass("slideInUp");
     $("#view_music").removeClass("disabled")
     $("#top-albums-div").addClass("faster");
@@ -149,15 +155,258 @@ async function webScrape() {
 
     console.log(moveForward);
 
-    if(moveForward === "OK") {
+    if (moveForward === "OK") {
 
-        
+        const scraped_images = await getImageData();
+
+        console.log(scraped_images);
+
+        $("#images-div").html("");
+
+        const row = $(`<div class="my-row"></div>`);
+
+        for (let i = 1; i < 7; i++) {
+            const col = $(`<div id="col-${i}" class="my-col" ></div>`);
+            row.append(col);
+        }
+
+        $("#images-div").append(row);
+
+        let col_num = 1
+
+        for (let i = 0; i < scraped_images.length; i++) {
+            const image_html = $(`
+            <div class="image animated zoomIn" style="animation-delay: ${i/12}s">
+                <div class="source-box animated faster">
+                    <a href="${scraped_images[i].img_src}" target="_blank">SOURCE <i class="tiny material-icons">open_in_new</i></a>
+                </div>
+                <img class="hoverable" alt="image with palette"
+                    src="${scraped_images[i].img_url ? scraped_images[i].img_url : "https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder.jpg"}" />
+            </div>
+            `);
+
+            if (col_num === 1) {
+                $("#col-1").append(image_html);
+                col_num++;
+                continue;
+            }
+
+            else if (col_num === 2) {
+                $("#col-2").append(image_html);
+                col_num++;
+                continue;
+            }
+
+            else if (col_num === 3) {
+                $("#col-3").append(image_html);
+                col_num++;
+                continue;
+            }
+
+            else if (col_num === 4) {
+                $("#col-4").append(image_html);
+                col_num++
+                continue;
+            }
+            else if (col_num === 5) {
+                $("#col-5").append(image_html);
+                col_num++
+                continue;
+            }
+            else if (col_num === 6) {
+                $("#col-6").append(image_html);
+                col_num = 1;
+                continue;
+            }
+        }
+
+        $("body").css("overflow-y", "scroll")
+
+        for (let i = 1; i < 7; i++) {
+            if (i === 1) {
+                calcPlaceholders(1)
+            }
+
+            else if (i === 2) {
+                calcPlaceholders(2)
+            }
+
+            else if (i === 3) {
+                calcPlaceholders(3)
+            }
+
+            else if (i === 4) {
+                calcPlaceholders(4)
+            }
+            else if (i === 5) {
+                calcPlaceholders(5)
+            }
+            else if (i === 6) {
+                calcPlaceholders(6)
+            }
+        }
 
         return;
     }
 
     console.log("Looks like we encountered an error :-(");
 
+}
+
+function calcPlaceholders(col_num) {
+    let col_subarea = 0;
+    let empty_area;
+    let rectangle_width;
+    let rectangle_length;
+    let area_per_rectangle;
+
+    const col_area = $(`#col-${col_num}`).height() * $(`#col-${col_num}`).width();
+
+    $(`#col-${col_num} > div`).each(function () {
+        col_subarea += $(this).height() * $(this).width()
+    });
+
+    if (col_area == col_subarea) {
+        return;
+    }
+
+    empty_area = col_area - col_subarea;
+
+    rectangle_width = $(`#col-${col_num}`).width();
+
+    area_per_rectangle = empty_area / 3 //because I want three rectangles
+
+    rectangle_length = area_per_rectangle / rectangle_width //algebra to find the remaining length
+
+    console.log("================================");
+    console.log("Col: " + col_num)
+    console.log("Area Left: ")
+    console.log("Area Per Rect: " + area_per_rectangle);
+    console.log("length: " + rectangle_length);
+    console.log("width: " + rectangle_width);
+
+    //background: radial-gradient(circle, rgba(255,143,117,1) 0%, rgba(231,123,111,1) 25%, rgba(249,123,152,1) 50%, rgba(231,111,178,1) 75%, rgba(255,117,206,1) 100%);
+    //background: linear-gradient(145deg, rgba(255,143,117,1) 0%, rgba(231,123,111,1) 25%, rgba(249,123,152,1) 50%, rgba(231,111,178,1) 75%, rgba(255,117,206,1) 100%)
+    
+    for (let i = 1; i < 10; i++) {
+        const which_background = Math.floor(Math.random() * 7);
+        const what_size = Math.random() * (20 - 7) + 7;
+
+        if (which_background === 0) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background-color: ${hex_1};"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    
+        else if (which_background === 1) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background-color: ${hex_2};"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    
+        else if (which_background === 2) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background: radial-gradient(circle, ${hex_1} 0%, ${hex_2} 25%, ${hex_3} 50%, ${hex_4} 75%, ${hex_5} 100%);"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    
+        else if (which_background === 3) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background: linear-gradient(145deg, ${hex_1} 0%, ${hex_2} 25%, ${hex_3} 50%, ${hex_4} 75%, ${hex_5} 100%);"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    
+        else if (which_background === 4) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background-color: ${hex_3};"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    
+        else if (which_background === 5) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background-color: ${hex_4};"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    
+        else if (which_background === 6) {
+            const personal_placeholder = $(`
+            <div class="image personal-placeholder hoverable animated zoomIn"
+            style="height: calc(100% / ${what_size}); background-color: ${hex_5};"
+            >
+            <div class="source-box animated faster">
+                    <p>Machine Generated</p>
+                </div>
+            </div>
+            `)
+    
+            $(`#col-${col_num}`).append(personal_placeholder);
+
+            continue;
+        }
+    }
+
+    return;
+    
 }
 
 async function populateTopTen() {
@@ -244,7 +493,10 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     let avg_valence = calcAverage(valence_arr);
 
     //hard coded to test
-
+    high_valence_count = 0;
+    high_energy_count = 1;
+    high_dance_count = 0;
+    avg_energy = .4
 
     console.log("Average Energy: " + avg_energy.toFixed(2));
     console.log("Average Danceability: " + avg_dance.toFixed(2));
@@ -374,6 +626,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             assignAnalogousSmallSpin(base_color_hex)
 
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
+
             return;
         }
 
@@ -385,6 +644,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             assignAnalogousSmallSpin(base_color_hex)
 
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
+
             return;
         }
         else {
@@ -394,6 +660,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             const base_color_hex = fullColorHex(red, green, 255);
 
             assignAnalogousSmallSpin(base_color_hex)
+
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
 
             return;
         }
@@ -410,6 +683,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             assignAnalogousSmallSpin(base_color_hex)
 
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
+
             return;
         }
 
@@ -423,6 +703,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
                 assignAnalogousSmallSpin(base_color_hex)
 
+
+                $("#loader").hide();
+
+                $("#palette-card").show();
+
+                $("#toggle-div").show()
+
                 return;
             }
 
@@ -431,6 +718,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             const base_color_hex = fullColorHex(255, 0, blue);
 
             assignAnalogousSmallSpin(base_color_hex)
+
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
 
             return;
         }
@@ -443,7 +737,11 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             assignAnalogousSmallSpin(base_color_hex);
 
-            $("#color-5").attr("style", `background-color: ${hex_5}`);
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
 
             return;
         }
@@ -461,6 +759,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             assignAnalogousSmallSpin(base_color_hex)
 
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
+
             return;
         }
 
@@ -470,6 +775,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             const base_color_hex = fullColorHex(255, test.toFixed(), 0);
 
             assignAnalogousSmallSpin(base_color_hex)
+
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
 
             return;
         }
@@ -487,6 +799,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             const base_color_hex = fullColorHex(red.toFixed(), 13, blue.toFixed());
 
             assignAnalogousSmallSpin(base_color_hex);
+
+            $("#loader").hide();
+
+            $("#palette-card").show();
+
+            $("#toggle-div").show()
+
 
             return;
         }
@@ -745,12 +1064,23 @@ function calcDanceability(danceability, R_array, G_array, B_array) {
     }
 }
 
+function getImageData() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/scrape"
+        }).then(function (response) {
+            console.log(response);
+            resolve(response);
+        })
+    })
+}
+
 function sendColors(url) {
     return new Promise((resolve, reject) => {
         $.ajax({
             method: "POST",
             url: url,
-        }).then(function(response) {
+        }).then(function (response) {
             resolve(response);
         })
     })

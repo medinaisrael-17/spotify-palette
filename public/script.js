@@ -633,12 +633,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     let avg_dance = calcAverage(dance_arr);
     let avg_valence = calcAverage(valence_arr);
 
-    //hard coded to test
-    high_valence_count = 1;
-    high_energy_count = 0;
-    high_dance_count = 0;
-    avg_valence = .4
-
     let avg_dance_percent = avg_dance * 100
     let avg_energy_percent = avg_energy * 100
     let avg_valence_percent = avg_valence * 100

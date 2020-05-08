@@ -138,14 +138,28 @@ async function init(data, token) {
 }
 
 async function webScrape() {
+    let colors;
 
-    const colors = {
-        hex_1: removeHash(hex_1.toHexString()),
-        hex_2: removeHash(hex_2.toHexString()),
-        hex_3: removeHash(hex_3),
-        hex_4: removeHash(hex_4.toHexString()),
-        hex_5: removeHash(hex_5.toHexString()),
+    try {
+        colors = {
+            hex_1: removeHash(hex_1.toHexString()),
+            hex_2: removeHash(hex_2.toHexString()),
+            hex_3: removeHash(hex_3),
+            hex_4: removeHash(hex_4.toHexString()),
+            hex_5: removeHash(hex_5.toHexString()),
+        }
     }
+    catch {
+        colors = {
+            hex_1: removeHash(hex_1),
+            hex_2: removeHash(hex_2),
+            hex_3: removeHash(hex_3),
+            hex_4: removeHash(hex_4),
+            hex_5: removeHash(hex_5),
+        }
+    }
+
+
 
     console.log(colors);
 
@@ -176,7 +190,7 @@ async function webScrape() {
 
         for (let i = 0; i < scraped_images.length; i++) {
             const image_html = $(`
-            <div class="image animated zoomIn" style="animation-delay: ${i/12}s">
+            <div class="image animated zoomIn" style="animation-delay: ${i / 12}s">
                 <div class="source-box animated faster">
                     <a href="${scraped_images[i].img_src}" target="_blank">SOURCE <i class="tiny material-icons">open_in_new</i></a>
                 </div>
@@ -223,16 +237,21 @@ async function webScrape() {
         $("body").css("overflow-y", "scroll")
 
         for (let i = 1; i < 7; i++) {
+            console.log(i);
+
             if (i === 1) {
                 calcPlaceholders(1)
+                continue;
             }
 
             else if (i === 2) {
                 calcPlaceholders(2)
+                continue;
             }
 
             else if (i === 3) {
                 calcPlaceholders(3)
+                continue;
             }
 
             else if (i === 4) {
@@ -240,9 +259,11 @@ async function webScrape() {
             }
             else if (i === 5) {
                 calcPlaceholders(5)
+                continue;
             }
             else if (i === 6) {
                 calcPlaceholders(6)
+                continue;
             }
         }
 
@@ -266,9 +287,9 @@ function calcPlaceholders(col_num) {
         col_subarea += $(this).height() * $(this).width()
     });
 
-    if (col_area == col_subarea) {
-        return;
-    }
+    // if (col_area == col_subarea) {
+    //     return;
+    // }
 
     empty_area = col_area - col_subarea;
 
@@ -287,7 +308,7 @@ function calcPlaceholders(col_num) {
 
     //background: radial-gradient(circle, rgba(255,143,117,1) 0%, rgba(231,123,111,1) 25%, rgba(249,123,152,1) 50%, rgba(231,111,178,1) 75%, rgba(255,117,206,1) 100%);
     //background: linear-gradient(145deg, rgba(255,143,117,1) 0%, rgba(231,123,111,1) 25%, rgba(249,123,152,1) 50%, rgba(231,111,178,1) 75%, rgba(255,117,206,1) 100%)
-    
+
     for (let i = 1; i < 10; i++) {
         const which_background = Math.floor(Math.random() * 7);
         const what_size = Math.random() * (20 - 7) + 7;
@@ -302,12 +323,12 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
         }
-    
+
         else if (which_background === 1) {
             const personal_placeholder = $(`
             <div class="image personal-placeholder hoverable animated zoomIn"
@@ -318,12 +339,12 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
         }
-    
+
         else if (which_background === 2) {
             const personal_placeholder = $(`
             <div class="image personal-placeholder hoverable animated zoomIn"
@@ -334,12 +355,12 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
         }
-    
+
         else if (which_background === 3) {
             const personal_placeholder = $(`
             <div class="image personal-placeholder hoverable animated zoomIn"
@@ -350,12 +371,12 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
         }
-    
+
         else if (which_background === 4) {
             const personal_placeholder = $(`
             <div class="image personal-placeholder hoverable animated zoomIn"
@@ -366,12 +387,12 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
         }
-    
+
         else if (which_background === 5) {
             const personal_placeholder = $(`
             <div class="image personal-placeholder hoverable animated zoomIn"
@@ -382,12 +403,12 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
         }
-    
+
         else if (which_background === 6) {
             const personal_placeholder = $(`
             <div class="image personal-placeholder hoverable animated zoomIn"
@@ -398,7 +419,7 @@ function calcPlaceholders(col_num) {
                 </div>
             </div>
             `)
-    
+
             $(`#col-${col_num}`).append(personal_placeholder);
 
             continue;
@@ -406,7 +427,7 @@ function calcPlaceholders(col_num) {
     }
 
     return;
-    
+
 }
 
 async function populateTopTen() {
@@ -415,19 +436,27 @@ async function populateTopTen() {
 
     $("#top-albums-div h3").css("color", base_color_complement);
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 15; i++) {
 
         let border_color;
 
-        if (i <= 3) {
+        if (i <= 2) {
             border_color = hex_1;
         }
 
-        else if (i > 3 && i <= 7) {
-            border_color = hex_3;
+        else if (i > 2 && i <= 5) {
+            border_color = hex_2;
         }
 
-        else if (i > 7 && i <= 11) {
+        else if (i > 5 && i <= 8) {
+            border_color = hex_3
+        }
+
+        else if (i > 8 && i <= 11) {
+            border_color = hex_4
+        }
+
+        else if (i > 11 && i <= 14) {
             border_color = hex_5
         }
 
@@ -469,6 +498,8 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
         const audio_features = await getAudioFeatures(items[i].id, token);
 
+        console.log(audio_features);
+
         const danceability = audio_features.danceability;
         const valence = audio_features.valence;
         const energy = audio_features.energy;
@@ -494,9 +525,13 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
     //hard coded to test
     high_valence_count = 0;
-    high_energy_count = 1;
-    high_dance_count = 0;
-    avg_energy = .4
+    high_energy_count = 0;
+    high_dance_count = 1;
+    avg_dance = .56
+
+    let avg_dance_percent = avg_dance * 100
+    let avg_energy_percent = avg_energy * 100
+    let avg_valence_percent = avg_valence * 100
 
     console.log("Average Energy: " + avg_energy.toFixed(2));
     console.log("Average Danceability: " + avg_dance.toFixed(2));
@@ -523,6 +558,21 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
         $("#loader").hide();
 
+        const p1 = $(`<p class="animated fadeIn delay-5s">You have an <strong>equal</strong> amount of songs with high energy, dance, and valence—giving you a <span style="color: brown;">neutral</span> palette.</p>`);
+
+        const ul = $(
+            `
+            <ul class="animated fadeIn delay-5s">
+                <li>Your Songs Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                <li>Your Songs Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                <li>Your Songs Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+            </ul>
+            `
+        )
+
+        $("#your-data").append(p1)
+        $("#your-data").append(ul)
+
         $("#palette-card").show();
 
         $("#toggle-div").show()
@@ -540,6 +590,21 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
         assignAnalogousBigSpin(base_color_hex);
 
         $("#loader").hide();
+
+        const p1 = $(`<p class="animated fadeIn delay-5s">You have high valence and energetic songs—giving you a <span style="color: ${base_color_hex};">red yellow</span> palette.</p>`);
+
+        const ul = $(
+            `
+            <ul class="animated fadeIn delay-5s">
+                <li>Your Songs Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                <li>Your Songs Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                <li>Your Songs Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+            </ul>
+            `
+        )
+
+        $("#your-data").append(p1)
+        $("#your-data").append(ul)
 
         $("#palette-card").show();
 
@@ -570,6 +635,21 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
         assignAnalogousBigSpin(base_color_hex);
 
         $("#loader").hide();
+
+        const p1 = $(`<p class="animated fadeIn delay-5s">You have highly danceable and energetic songs—giving you a <span style="color: ${base_color_hex};">pastel</span> palette.</p>`);
+
+        const ul = $(
+            `
+            <ul class="animated fadeIn delay-5s">
+                <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+            </ul>
+            `
+        )
+
+        $("#your-data").append(p1)
+        $("#your-data").append(ul)
 
         $("#palette-card").show();
 
@@ -606,6 +686,21 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
         $("#loader").hide();
 
+        const p1 = $(`<p class="animated fadeIn delay-5s">You have high valence and danceable songs—giving you a <span style="color: ${base_color_hex};">neon</span> palette.</p>`);
+
+        const ul = $(
+            `
+            <ul class="animated fadeIn delay-5s">
+                <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+            </ul>
+            `
+        )
+
+        $("#your-data").append(p1)
+        $("#your-data").append(ul)
+
         $("#palette-card").show();
 
         $("#toggle-div").show()
@@ -629,6 +724,24 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             $("#loader").hide();
 
+            const p1 = $(`
+            <p class="animated fadeIn delay-5s">Your have more danceable songs—giving you an <span style="color: ${base_color_hex};">orange</span> palette.</p>
+            <p class="animated fadeIn delay-5s"> <span style="color: ${base_color_hex};">Orange</span> is the color of movement.</p>
+            `);
+
+            const ul = $(
+                `
+                <ul class="animated fadeIn delay-5s">
+                    <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                    <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                </ul>
+                `
+            )
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
+
             $("#palette-card").show();
 
             $("#toggle-div").show()
@@ -647,6 +760,24 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             $("#loader").hide();
 
+            const p1 = $(`
+            <p class="animated fadeIn delay-5s">Your have more danceable songs—giving you an <span style="color: ${base_color_hex};">orange</span> palette.</p>
+            <p class="animated fadeIn delay-5s"> <span style="color: ${base_color_hex};">Orange</span> is the color of movement.</p>
+            `);
+
+            const ul = $(
+                `
+                <ul class="animated fadeIn delay-5s">
+                    <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                    <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                </ul>
+                `
+            )
+
+            $("#your-data").append(p1);
+            $("#your-data").append(ul)
+
             $("#palette-card").show();
 
             $("#toggle-div").show()
@@ -654,15 +785,33 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             return;
         }
         else {
-            const red = Math.floor(Math.random() * 66);
-            const green = Math.floor(Math.random() * 256);
+            const green = Math.floor(Math.random() * 175) + 75;
+            const blue = Math.floor(Math.random() * 101);
 
-            const base_color_hex = fullColorHex(red, green, 255);
+            const base_color_hex = fullColorHex(255, green, blue);
 
-            assignAnalogousSmallSpin(base_color_hex)
+            assignComplementary(base_color_hex);
 
 
             $("#loader").hide();
+
+            const p1 = $(`
+            <p class="animated fadeIn delay-5s">Your have more danceable songs—giving you an <span style="color: ${base_color_hex};">orange</span> palette.</p>
+            <p class="animated fadeIn delay-5s"><span style="color: ${base_color_hex};">Orange</span> is the color of movement. Your calming average also renders its <span style="color: ${hex_5}">complementary color</span>.</p>
+            `)
+
+            const ul = $(
+                `
+                <ul class="animated fadeIn delay-5s">
+                    <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                    <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                </ul>
+                `
+            )
+
+            $("#your-data").append(p1);
+            $("#your-data").append(ul)
 
             $("#palette-card").show();
 
@@ -683,6 +832,24 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             assignAnalogousSmallSpin(base_color_hex)
 
+            const p1 = $(`
+            <p class="animated fadeIn delay-5s">Your have more energetic songs—giving you a <span style="color: ${base_color_hex};">red</span> palette.</p>
+            <p class="animated fadeIn delay-5s"> <span style="color: ${base_color_hex};">Red</span> is the color of passion or desire and can also be associated with energy.</p>
+            `);
+
+            const ul = $(
+                `
+                <ul class="animated fadeIn delay-5s">
+                    <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                    <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                </ul>
+                `
+            )
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
+
 
             $("#loader").hide();
 
@@ -701,7 +868,26 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
                 const base_color_hex = fullColorHex(255, b_and_g, b_and_g);
 
-                assignAnalogousSmallSpin(base_color_hex)
+                assignAnalogousSmallSpin(base_color_hex);
+
+                const p1 = $(`
+                <p class="animated fadeIn delay-5s">Your have more energetic songs—giving you a <span style="color: ${base_color_hex};">red</span> palette.</p>
+                <p class="animated fadeIn delay-5s"> <span style="color: ${base_color_hex};">Red</span> is the color of passion or desire and can also be associated with energy.</p>
+                `);
+
+                const ul = $(
+                    `
+                    <ul class="animated fadeIn delay-5s">
+                        <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                        <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    </ul>
+                    `
+                );
+
+
+                $("#your-data").append(p1)
+                $("#your-data").append(ul)
 
 
                 $("#loader").hide();
@@ -717,7 +903,25 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
             const base_color_hex = fullColorHex(255, 0, blue);
 
-            assignAnalogousSmallSpin(base_color_hex)
+            assignAnalogousSmallSpin(base_color_hex);
+
+            const p1 = $(`
+                <p class="animated fadeIn delay-5s">Your have more energetic songs—giving you a <span style="color: ${base_color_hex};">red</span> palette.</p>
+                <p class="animated fadeIn delay-5s"> <span style="color: ${base_color_hex};">Red</span> is the color of passion or desire and can also be associated with energy.</p>
+                `);
+
+            const ul = $(
+                `
+                    <ul class="animated fadeIn delay-5s">
+                        <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                        <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    </ul>
+                    `
+            );
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
 
 
             $("#loader").hide();
@@ -730,14 +934,31 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
         }
 
         else {
-            const red = Math.floor(Math.random() * 156);
-            const blue = Math.floor(Math.random() * 133);
+            const blue = Math.floor(Math.random() * 171);
 
-            const base_color_hex = fullColorHex(red, 255, blue);
+            const base_color_hex = fullColorHex(255, 0, blue);
 
-            assignAnalogousSmallSpin(base_color_hex);
+            assignComplementary(base_color_hex);
 
             $("#loader").hide();
+
+            const p1 = $(`
+                <p class="animated fadeIn delay-5s">Your have more energetic songs—giving you a <span style="color: ${base_color_hex};">red</span> palette.</p>
+                <p class="animated fadeIn delay-5s"> <span style="color: ${base_color_hex};">Red</span> is the color of passion or desire and can also be associated with energy. Your peaceful average has also rendered its <span style="color: ${hex_5}">complementary color</span>. </p>
+                `);
+
+            const ul = $(
+                `
+                    <ul class="animated fadeIn delay-5s">
+                        <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                        <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    </ul>
+                    `
+            );
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
 
             $("#palette-card").show();
 
@@ -750,7 +971,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
     else if (high_valence_count > high_dance_count && high_valence_count > high_energy_count) {
         console.log("high valence selected");
-        //this will deal with red
+        //this will deal with yellow
         //rgb (255, ???, ???)
         //rgb(255, 0, ???)
 
@@ -758,6 +979,24 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             const base_color_hex = "#ffff00"
 
             assignAnalogousSmallSpin(base_color_hex)
+
+            const p1 = $(`
+                <p class="animated fadeIn delay-5s">Your have more songs with high valence—giving you a <span style="color: #FFE000;">yellow</span> palette.</p>
+                <p class="animated fadeIn delay-5s"> <span style="color: #FFE000;">Yellow</span> symbolizes happiness and warmth.</p>
+                `);
+
+            const ul = $(
+                `
+                    <ul class="animated fadeIn delay-5s">
+                        <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                        <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    </ul>
+                    `
+            );
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
 
 
             $("#loader").hide();
@@ -771,10 +1010,29 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
         else if (avg_valence > .5) {
             const test = Math.random() * (255 - 200) + 200;
+            const blue = Math.random() * (100 - 0) + 0;
 
-            const base_color_hex = fullColorHex(255, test.toFixed(), 0);
+            const base_color_hex = fullColorHex(255, test.toFixed(), blue.toFixed());
 
             assignAnalogousSmallSpin(base_color_hex)
+
+            const p1 = $(`
+            <p class="animated fadeIn delay-5s">Your have more songs with high valence—giving you a <span style="color: #FFE000;">yellow</span> palette.</p>
+            <p class="animated fadeIn delay-5s"> <span style="color: #FFE000;">Yellow</span> symbolizes happiness and warmth.</p>
+            `);
+
+            const ul = $(
+                `
+                <ul class="animated fadeIn delay-5s">
+                    <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                    <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                </ul>
+                `
+            );
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
 
 
             $("#loader").hide();
@@ -791,14 +1049,30 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             //g => 13
             //b => 159 228
 
-            const red = Math.random() * (142 - 95) + 95;
-            const blue = Math.random() * (228 - 159) + 159;
+            const test = Math.random() * (255 - 200) + 200;
+            const blue = Math.random() * (100 - 0) + 0;
 
-            console.log(red, blue);
+            const base_color_hex = fullColorHex(255, test.toFixed(), blue.toFixed());
 
-            const base_color_hex = fullColorHex(red.toFixed(), 13, blue.toFixed());
+            assignComplementary(base_color_hex);
 
-            assignAnalogousSmallSpin(base_color_hex);
+            const p1 = $(`
+            <p class="animated fadeIn delay-5s">Your have more songs with high valence—giving you a <span style="color: #FFE000;">yellow</span> palette.</p>
+            <p class="animated fadeIn delay-5s"> <span style="color: #FFE000;">Yellow</span> symbolizes happiness and warmth. Your serene average has also rendered its <span style="color:${hex_5}">complementary color</span>.</p>
+            `);
+
+            const ul = $(
+                `
+                <ul class="animated fadeIn delay-5s">
+                    <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
+                    <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                </ul>
+                `
+            );
+
+            $("#your-data").append(p1)
+            $("#your-data").append(ul)
 
             $("#loader").hide();
 
@@ -1217,6 +1491,9 @@ function assignAnalogousSmallSpin(base_color_hex) {
 }
 
 function assignComplementary(base_color_hex) {
+
+    hex_3 = base_color_hex;
+
     $("#color-3").attr("style", `background-color: ${base_color_hex}`);
 
     const compliment_one = hexToComplimentary(base_color_hex);
@@ -1242,6 +1519,14 @@ function assignComplementary(base_color_hex) {
     hex_1 = base_color_hex_darker;
 
     $("#color-1").attr("style", `background-color: ${base_color_hex_darker}`);
+
+    $("#color-3-text").text(hex_3);
+    $("#color-1-text").text(hex_1);
+    $("#color-2-text").text(hex_2);
+    $("#color-4-text").text(hex_4);
+    $("#color-5-text").text(hex_5);
+
+    populateTopTen();
 }
 
 function removeHash(hex) {

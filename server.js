@@ -175,6 +175,10 @@ app.get("/scrape", async function (req, res) {
   console.log("DATA ABOUT TO SEND");
   console.log(img_data);
 
+  if (img_data === 404) {
+    res.sendStatus(404);
+  }
+
   res.json(img_data);
 
 })
@@ -182,7 +186,7 @@ app.get("/scrape", async function (req, res) {
 
 async function webscrape(url) {
 
-  var browser = await puppeteer.launch();
+  var browser = await puppeteer.launch({headless: false});
   var page = await browser.newPage();
 
   await page.goto(url, { waitUntil: "networkidle2" });
@@ -191,31 +195,27 @@ async function webscrape(url) {
 
     var data = []; 
 
-    // var first_result_img_src = document.querySelector(".first-item").children[0].firstElementChild.getAttribute("src");
-
-    // var first_result_src = document.querySelector(".first-item").children[1].getAttribute("href");
-
-    // const first_data = {
-    //   img_url: first_result_img_src,
-    //   img_src: first_result_src 
-    // }
-
-    // data.push(first_data);
-
     var other_results = document.querySelectorAll(".result-item");
 
     console.log(other_results);
 
-    for ( var i = 0; i < 50; i++) {
-      var other_result_img_src = other_results[i].children[0].firstElementChild.getAttribute("src");
-
-      var other_result_src = other_results[i].children[1].getAttribute("href");
-
-      data.push({
-        img_url: other_result_img_src,
-        img_src: other_result_src
-      })
+    try {
+      for ( var i = 0; i < 50; i++) {
+        var other_result_img_src = other_results[i].children[0].firstElementChild.getAttribute("src");
+  
+        var other_result_src = other_results[i].children[1].getAttribute("href");
+  
+        data.push({
+          img_url: other_result_img_src,
+          img_src: other_result_src
+        })
+      }
     }
+    catch {
+      return 404;
+    }
+
+    
 
     return data;
   })

@@ -46,7 +46,7 @@ $(document).on("mouseenter", ".image", function () {
     // $(this).children(".source-box").css("display", "none");
 })
 
-$(document).on("click", "#refresh", function() {
+$(document).on("click", "#refresh", function () {
     window.location.reload();
 })
 
@@ -141,7 +141,7 @@ var access_token = params.access_token,
     error = params.error;
 
 if (error) {
-    alert("Looks like there was an error authorizing your account :-(")
+    alert("Looks like there was an error authorizing your account :-( Try opening this in a new tab")
 }
 
 else {
@@ -151,7 +151,11 @@ else {
             headers: {
                 "Authorization": "Bearer " + access_token
             },
-            success: function (response) { init(response, access_token) }
+            success: function (response) { init(response, access_token) },
+            error: function (err) {
+                const toastHTML = '<span>Erorr getting data :-( Try refreshing the page or opening in a new tab</span><button id="refresh" class="btn-flat toast-action" style="color:#69f0ae ">REFRESH</button>';
+                M.toast({ html: toastHTML, displayLength: 10000 });
+            }
         })
     }
     else {
@@ -277,7 +281,7 @@ async function webScrape() {
         catch {
             console.log("caught the error");
             const toastHTML = '<span>Erorr getting images :-( Try refreshing the page</span><button id="refresh" class="btn-flat toast-action" style="color:#69f0ae ">REFRESH</button>';
-            M.toast({html: toastHTML, displayLength: 8000});
+            M.toast({ html: toastHTML, displayLength: 8000 });
         }
 
 
@@ -570,8 +574,8 @@ async function populateTopTen() {
 
         const song_html = $(`
         <div class="song">
-            <div class="playbutton animated pulse">
-                <i class="medium material-icons">play_circle_outline</i>
+            <div class="playbutton animated faster fadeIn">
+                <a href="${items[i].external_urls.spotify}" target="_blank"><i class="medium material-icons">play_circle_outline</i></a>
             </div>
             <a href="${items[i].external_urls.spotify}" target="_blank"><img alt="album cover" class="hoverable" style="border: 5px solid ${border_color}" src="${items[i].album.images[0].url}"></a>
             <strong><span class="song-name truncate">${items[i].name}</span></strong>
@@ -1452,9 +1456,9 @@ function getImageData() {
             console.log(response);
             resolve(response);
         })
-        .catch(function(err) {
-            reject(err);
-        })
+            .catch(function (err) {
+                reject(err);
+            })
     })
 }
 

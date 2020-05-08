@@ -219,6 +219,12 @@ body {
 
 /* Media Queries */
 
+@media screen and (max-width: 1440px) {
+    #palette-card {
+        margin-top: 1%;
+    }
+}
+
 @media screen and (max-width: 1220px) {
     .playbutton {
         left: 30%;

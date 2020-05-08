@@ -186,7 +186,7 @@ app.get("/scrape", async function (req, res) {
 
 async function webscrape(url) {
 
-  var browser = await puppeteer.launch({headless: false});
+  var browser = await puppeteer.launch();
   var page = await browser.newPage();
 
   await page.goto(url, { waitUntil: "networkidle2" });

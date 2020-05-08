@@ -46,12 +46,41 @@ $(document).on("mouseenter", ".image", function () {
     // $(this).children(".source-box").css("display", "none");
 })
 
+//showing the palette card
+$("#view_palette").click(function () {
+    //hide the music div
+    $("#top-albums-div").removeClass("slideInUp");
+    $("#view_music").removeClass("disabled")
+    $("#top-albums-div").addClass("slideOutUp");
+    $("#top-albums-div").hide();
+
+    //hide the images div
+    $("#similar-images").removeClass("slideInUp");
+    $("#view_images").removeClass("disabled");
+    $("#similar-images").addClass("slideOutUp");
+    $("#similar-images").hide();
+
+
+    $("#palette-card").show()
+    $("#palette-card").removeClass("slideOutUp");
+    $("#palette-card").addClass("slideInUp");
+    $("#view_palette").addClass("disabled");
+})
+
+//showing the music div 
 $("#view_music").click(function () {
+    //hide the palette card
     $("#palette-card").removeClass("slideInUp");
     $("#view_palette").removeClass("disabled")
-    $("#palette-card").addClass("faster");
     $("#palette-card").addClass("slideOutUp");
-    setTimeout(function () { $("#palette-card").css("display", "none") }, 600)
+    $("#palette-card").hide();
+
+    //hide the images div
+    $("#similar-images").removeClass("slideInUp");
+    $("#view_images").removeClass("disabled");
+    $("#similar-images").addClass("slideOutUp");
+    $("#similar-images").hide();
+
 
     $("#top-albums-div").show()
     $("#top-albums-div").removeClass("slideOutUp");
@@ -59,18 +88,29 @@ $("#view_music").click(function () {
     $("#view_music").addClass("disabled");
 })
 
+
+//showing the images div
 $("#view_images").click(function () {
+    //set the colors of the circular palette
     $("#palette-1").css("background-color", hex_1);
     $("#palette-2").css("background-color", hex_2);
     $("#palette-3").css("background-color", hex_3);
     $("#palette-4").css("background-color", hex_4);
     $("#palette-5").css("background-color", hex_5);
 
+
+    //hide the albums div
     $("#top-albums-div").removeClass("slideInUp");
     $("#view_music").removeClass("disabled")
-    $("#top-albums-div").addClass("faster");
     $("#top-albums-div").addClass("slideOutUp");
-    setTimeout(function () { $("#top-albums-div").css("display", "none") }, 600)
+    $("#top-albums-div").hide();
+
+    //hide the palette div
+    $("#palette-card").removeClass("slideInUp");
+    $("#view_palette").removeClass("disabled");
+    $("#palette-card").addClass("slideOutUp");
+    $("#palette-card").hide();
+
 
     $("#similar-images").show()
     $("#similar-images").removeClass("slideOutUp");
@@ -138,6 +178,59 @@ async function init(data, token) {
 }
 
 async function webScrape() {
+
+    $("#images-div").html(`
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <div class="spinner-layer spinner-red">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <div class="spinner-layer spinner-yellow">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <div class="spinner-layer spinner-green">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+    `)
+
     let colors;
 
     try {
@@ -498,8 +591,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
 
         const audio_features = await getAudioFeatures(items[i].id, token);
 
-        console.log(audio_features);
-
         const danceability = audio_features.danceability;
         const valence = audio_features.valence;
         const energy = audio_features.energy;
@@ -524,10 +615,10 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     let avg_valence = calcAverage(valence_arr);
 
     //hard coded to test
-    high_valence_count = 0;
+    high_valence_count = 1;
     high_energy_count = 0;
-    high_dance_count = 1;
-    avg_dance = .56
+    high_dance_count = 0;
+    avg_valence = .4
 
     let avg_dance_percent = avg_dance * 100
     let avg_energy_percent = avg_energy * 100

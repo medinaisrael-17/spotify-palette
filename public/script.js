@@ -168,9 +168,6 @@ async function init(data, token) {
     let G = [];
     let B = [];
 
-
-    console.log(data);
-
     $("#welcome").hide();
     $("#palette-card").hide();
     $("toggle-div").hide();
@@ -179,7 +176,6 @@ async function init(data, token) {
     $("#name").text(`${data.display_name}'s`)
 
     const { items } = await getTopTracks(token);
-    console.log(items);
 
     calcColor(0, 50, items, token, R, G, B);
 
@@ -260,15 +256,9 @@ async function webScrape() {
         }
     }
 
-
-
-    console.log(colors);
-
     const url = `/${colors.hex_1}/${colors.hex_2}/${colors.hex_3}/${colors.hex_4}/${colors.hex_5}`;
 
     const moveForward = await sendColors(url);
-
-    console.log(moveForward);
 
     if (moveForward === "OK") {
 
@@ -279,13 +269,9 @@ async function webScrape() {
         }
 
         catch {
-            console.log("caught the error");
             const toastHTML = '<span>Erorr getting images :-( Try refreshing the page</span><button id="refresh" class="btn-flat toast-action" style="color:#69f0ae ">REFRESH</button>';
             M.toast({ html: toastHTML, displayLength: 8000 });
         }
-
-
-        console.log(scraped_images);
 
         $("#images-div").html("");
 
@@ -349,7 +335,6 @@ async function webScrape() {
         $("body").css("overflow-y", "scroll")
 
         for (let i = 1; i < 7; i++) {
-            console.log(i);
 
             if (i === 1) {
                 calcPlaceholders(1)
@@ -382,8 +367,6 @@ async function webScrape() {
         return;
     }
 
-    console.log("Looks like we encountered an error :-(");
-
 }
 
 function calcPlaceholders(col_num) {
@@ -410,13 +393,6 @@ function calcPlaceholders(col_num) {
     area_per_rectangle = empty_area / 3 //because I want three rectangles
 
     rectangle_length = area_per_rectangle / rectangle_width //algebra to find the remaining length
-
-    console.log("================================");
-    console.log("Col: " + col_num)
-    console.log("Area Left: ")
-    console.log("Area Per Rect: " + area_per_rectangle);
-    console.log("length: " + rectangle_length);
-    console.log("width: " + rectangle_width);
 
     //background: radial-gradient(circle, rgba(255,143,117,1) 0%, rgba(231,123,111,1) 25%, rgba(249,123,152,1) 50%, rgba(231,111,178,1) 75%, rgba(255,117,206,1) 100%);
     //background: linear-gradient(145deg, rgba(255,143,117,1) 0%, rgba(231,123,111,1) 25%, rgba(249,123,152,1) 50%, rgba(231,111,178,1) 75%, rgba(255,117,206,1) 100%)
@@ -625,10 +601,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
         BlueAVG = calcAverage(B);
     }
 
-    console.log("Amount of songs with high energy: " + high_energy_count);
-    console.log("Amount of songs with high danceability: " + high_dance_count);
-    console.log("Amount of songs with high valence: " + high_valence_count);
-
     let avg_energy = calcAverage(energy_arr);
     let avg_dance = calcAverage(dance_arr);
     let avg_valence = calcAverage(valence_arr);
@@ -637,12 +609,8 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     let avg_energy_percent = avg_energy * 100
     let avg_valence_percent = avg_valence * 100
 
-    console.log("Average Energy: " + avg_energy.toFixed(2));
-    console.log("Average Danceability: " + avg_dance.toFixed(2));
-    console.log("Average Valence: " + avg_valence.toFixed(2));
 
     if (high_dance_count == high_energy_count && high_dance_count === high_valence_count) {
-        console.log("all the same!")
         // neutral colors
         // r 244 - 255
         // g 218-255
@@ -651,8 +619,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
         const red = Math.random() * (255 - 244) + 244;
         const green = Math.random() * (255 - 218) + 218;
         const blue = Math.random() * (230 - 209) + 209;
-
-        console.log(red, green, blue);
 
 
         const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
@@ -686,7 +652,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     }
 
     else if (high_valence_count == high_energy_count && high_valence_count > high_dance_count) {
-        console.log("similar valence and energy");
         //red to yellow color palette
         const base_color_hex = "#ec5300";
         // const base_color_hex = "#e990fd"
@@ -719,7 +684,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     }
 
     else if (high_energy_count == high_dance_count && high_energy_count > high_valence_count) {
-        console.log("similar energy and dance")
         //pastel
 
         //r 229-255
@@ -730,7 +694,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
         const green = Math.random() * (185 - 123) + 123;
         const blue = Math.random() * (255 - 113) + 113;
 
-        console.log(red, green, blue)
 
 
         const base_color_hex = fullColorHex(red.toFixed(), green.toFixed(), blue.toFixed());
@@ -763,7 +726,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     }
 
     else if (high_valence_count == high_dance_count && high_valence_count > high_energy_count) {
-        console.log("similar valence and dance")
         //neon
 
         const which_neon = Math.floor(Math.random() * 4);
@@ -813,7 +775,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     }
 
     else if (high_dance_count > high_energy_count && high_dance_count > high_valence_count) {
-        console.log("high dance selected");
         //this will deal with orange so rgb => red must 255 and blue must be 0
         //rgb(255, ???, ???)
         //75-174 
@@ -926,7 +887,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     }
 
     else if (high_energy_count > high_dance_count && high_energy_count > high_valence_count) {
-        console.log("high energy selected");
         //this will deal with red
         //rgb (255, ???, ???)
         //rgb(255, 0, ???)
@@ -1074,7 +1034,6 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
     }
 
     else if (high_valence_count > high_dance_count && high_valence_count > high_energy_count) {
-        console.log("high valence selected");
         //this will deal with yellow
         //rgb (255, ???, ???)
         //rgb(255, 0, ???)
@@ -1447,7 +1406,6 @@ function getImageData() {
         $.ajax({
             url: "/scrape"
         }).then(function (response) {
-            console.log(response);
             resolve(response);
         })
             .catch(function (err) {

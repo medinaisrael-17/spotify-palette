@@ -104,7 +104,6 @@ app.get('/callback', function (req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function (error, response, body) {
-          console.log(body);
         });
 
         // we can also pass the token to the browser to make requests from there
@@ -161,8 +160,6 @@ app.post("/:hex1/:hex2/:hex3/:hex4/:hex5", function (req, res) {
   hex_4 = req.params.hex4;
   hex_5 = req.params.hex5;
 
-  console.log(hex_1, hex_2, hex_3, hex_4, hex_5)
-
   res.sendStatus(200)
 })
 
@@ -171,9 +168,6 @@ app.get("/scrape", async function (req, res) {
   var url = `https://artsexperiments.withgoogle.com/artpalette/colors/${hex_1}-${hex_2}-${hex_3}-${hex_4}-${hex_5}`
 
   var img_data = await webscrape(url);
-
-  console.log("DATA ABOUT TO SEND");
-  console.log(img_data);
 
   if (img_data === 404) {
     res.sendStatus(404);
@@ -197,8 +191,6 @@ async function webscrape(url) {
 
     var other_results = document.querySelectorAll(".result-item");
 
-    console.log(other_results);
-
     try {
       for ( var i = 0; i < 50; i++) {
         var other_result_img_src = other_results[i].children[0].firstElementChild.getAttribute("src");
@@ -220,14 +212,11 @@ async function webscrape(url) {
     return data;
   })
 
-  console.log(img_data);
-
   await browser.close()
 
   return img_data;
 }
 
-// console.log('Listening on 8888');
 app.listen(PORT, function () {
   console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT)
 })

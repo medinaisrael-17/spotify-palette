@@ -13,10 +13,11 @@ var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var axios = require("axios");
-const puppeteer = require("puppeteer")
+var puppeteer = require("puppeteer")
+require("dotenv").config();
 
-var client_id = 'a54e6a032df746d08b55d6ced8999997'; // Your client id
-var client_secret = 'e0e69b2651704aa3bdccc64c23062e58'; // Your secret
+var client_id = process.env.CLIENT_ID; // Your client id
+var client_secret = process.env.CLIENT_SECRET; // Your secret
 var redirect_uri = process.env.redirect_uri || 'http://localhost:3000/callback'; // Your redirect uri
 
 const PORT = process.env.PORT || 3000;

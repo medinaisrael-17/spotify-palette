@@ -46,6 +46,10 @@ $(document).on("mouseenter", ".image", function () {
     // $(this).children(".source-box").css("display", "none");
 })
 
+$(document).on("click", "#refresh", function() {
+    window.location.reload();
+})
+
 //showing the palette card
 $("#view_palette").click(function () {
     //hide the music div
@@ -264,7 +268,18 @@ async function webScrape() {
 
     if (moveForward === "OK") {
 
-        const scraped_images = await getImageData();
+        let scraped_images;
+
+        try {
+            scraped_images = await getImageData();
+        }
+
+        catch {
+            console.log("caught the error");
+            const toastHTML = '<span>Erorr getting images :-( Try refreshing the page</span><button id="refresh" class="btn-flat toast-action" style="color:#69f0ae ">REFRESH</button>';
+            M.toast({html: toastHTML, displayLength: 8000});
+        }
+
 
         console.log(scraped_images);
 
@@ -1436,6 +1451,9 @@ function getImageData() {
         }).then(function (response) {
             console.log(response);
             resolve(response);
+        })
+        .catch(function(err) {
+            reject(err);
         })
     })
 }

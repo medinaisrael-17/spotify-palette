@@ -8,6 +8,22 @@ body {
     display: none;
 }
 
+#external_links {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: rgb(167, 167, 167);
+}
+
+#external_links a {
+    color: lightblue;
+}
+
+#external_links a:hover {
+    color: blue;
+}
+
 #loader {
     margin: auto;
     width: 8%;

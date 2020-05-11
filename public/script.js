@@ -42,8 +42,7 @@ $(document).on("mouseenter", ".image", function () {
     $(this).children(".source-box").css("display", "block");
 }).on("mouseleave", ".image", function () {
     $(this).children(".source-box").removeClass("fadeIn")
-    $(this).children(".source-box").addClass("fadeOut");
-    // $(this).children(".source-box").css("display", "none");
+    $(this).children(".source-box").addClass("fadeOut");;
 })
 
 $(document).on("click", "#refresh", function () {

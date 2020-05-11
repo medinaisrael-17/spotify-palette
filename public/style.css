@@ -317,12 +317,9 @@ body {
     bottom: -48%; 
     }
 
-    .song {
-        width: 80%;
-    }
-
     .playbutton {
-        display: none;
+        top: 24%;
+        left: 29%;
     }
 }
 
@@ -330,6 +327,13 @@ body {
 
     .playbutton a i  {
         left: 29%;
+    }
+}
+
+@media screen and (max-width: 333px) {
+    .playbutton {
+        top: 19%;
+        left: 25%;
     }
 }
 

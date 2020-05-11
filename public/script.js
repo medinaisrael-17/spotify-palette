@@ -654,7 +654,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             <ul class="animated fadeIn delay-5s">
                 <li>Your Songs Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                 <li>Your Songs Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                <li>Your Songs Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                <li>Your Songs Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
             </ul>
             `
         )
@@ -686,7 +686,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             <ul class="animated fadeIn delay-5s">
                 <li>Your Songs Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                 <li>Your Songs Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                <li>Your Songs Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                <li>Your Songs Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
             </ul>
             `
         )
@@ -729,7 +729,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             <ul class="animated fadeIn delay-5s">
                 <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                 <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
             </ul>
             `
         )
@@ -778,7 +778,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
             <ul class="animated fadeIn delay-5s">
                 <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                 <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
             </ul>
             `
         )
@@ -818,7 +818,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                 <ul class="animated fadeIn delay-5s">
                     <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                     <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                 </ul>
                 `
             )
@@ -854,7 +854,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                 <ul class="animated fadeIn delay-5s">
                     <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                     <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                 </ul>
                 `
             )
@@ -889,7 +889,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                 <ul class="animated fadeIn delay-5s">
                     <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                     <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                 </ul>
                 `
             )
@@ -925,7 +925,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                 <ul class="animated fadeIn delay-5s">
                     <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                     <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                 </ul>
                 `
             )
@@ -963,7 +963,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                     <ul class="animated fadeIn delay-5s">
                         <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                         <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                     </ul>
                     `
                 );
@@ -998,7 +998,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                     <ul class="animated fadeIn delay-5s">
                         <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                         <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                     </ul>
                     `
             );
@@ -1035,7 +1035,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                     <ul class="animated fadeIn delay-5s">
                         <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                         <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                     </ul>
                     `
             );
@@ -1072,7 +1072,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                     <ul class="animated fadeIn delay-5s">
                         <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                         <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                        <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                        <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                     </ul>
                     `
             );
@@ -1108,7 +1108,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                 <ul class="animated fadeIn delay-5s">
                     <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                     <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                 </ul>
                 `
             );
@@ -1148,7 +1148,7 @@ async function calcColor(i_min, i_max, items, token, R, G, B) {
                 <ul class="animated fadeIn delay-5s">
                     <li>Average Danceability: <strong>${avg_dance_percent.toFixed()}%</strong></li>
                     <li>Average Energy: <strong>${avg_energy_percent.toFixed()}%</strong></li>
-                    <li>Average Valence (positivty): <strong>${avg_valence_percent.toFixed()}%</strong></li>
+                    <li>Average Valence (positivity): <strong>${avg_valence_percent.toFixed()}%</strong></li>
                 </ul>
                 `
             );

@@ -122,6 +122,22 @@ $("#view_images").click(function () {
     $("#view_images").addClass("disabled");
 
     webScrape();
+});
+
+$("#toggle-album-view").click(function() {
+    const value = $(this).attr("data-view");
+
+    $(".song-div").toggle();
+
+    if (value == "show-palette-albums") {
+        $(this).text("Show Your Top Albums");
+        $(this).attr("data-view", "show-top-albums");
+    }
+    else {
+        $(this).text("Show Album Art With Your Palette");
+        $(this).attr("data-view", "show-palette-albums");
+    }
+    
 })
 
 function getHashParams() {
@@ -558,8 +574,11 @@ async function populateTopTen() {
         </div>
         `);
 
-        $(".song-div").append(song_html);
+        $("#song-div-1").append(song_html);
     }
+    
+
+    $("iframe").attr("src", `http://predominant.ly/${removeHash(hex_3)}`);
 }
 
 function rgbToHex(rgb) {

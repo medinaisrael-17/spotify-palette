@@ -89,10 +89,26 @@ body {
     height: 100vh;
 }
 
-.song-div {
+#song-div-1 {
     display: flex;
     flex-wrap: wrap;
     margin-top: 2em;
+}
+
+#song-div-2 {
+    display: none;
+}
+
+iframe {
+    width: 100%;
+    height: 38em;
+    margin-top: 2em;
+    border: none;
+}
+
+#toggle-album-view {
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .song {

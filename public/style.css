@@ -95,15 +95,15 @@ body {
     margin-top: 2em;
 }
 
-#song-div-2 {
+/* #song-div-2 {
     display: none;
-}
+} */
 
-iframe {
+/* iframe {
     width: 100%;
     height: 38em;
     border: none;
-}
+} */
 
 #toggle-album-view {
     margin-top: 1em;

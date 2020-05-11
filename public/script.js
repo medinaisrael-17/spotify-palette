@@ -124,21 +124,23 @@ $("#view_images").click(function () {
     webScrape();
 });
 
-$("#toggle-album-view").click(function () {
-    const value = $(this).attr("data-view");
+//had to be removed due to mixed content
 
-    $(".song-div").toggle();
+// $("#toggle-album-view").click(function () {
+//     const value = $(this).attr("data-view");
 
-    if (value == "show-palette-albums") {
-        $(this).text("Show Your Top Albums");
-        $(this).attr("data-view", "show-top-albums");
-    }
-    else {
-        $(this).text("Show Album Art With Your Palette");
-        $(this).attr("data-view", "show-palette-albums");
-    }
+//     $(".song-div").toggle();
 
-})
+//     if (value == "show-palette-albums") {
+//         $(this).text("Show Your Top Albums");
+//         $(this).attr("data-view", "show-top-albums");
+//     }
+//     else {
+//         $(this).text("Show Album Art With Your Palette");
+//         $(this).attr("data-view", "show-palette-albums");
+//     }
+
+// })
 
 function getHashParams() {
     var hashParams = {};
